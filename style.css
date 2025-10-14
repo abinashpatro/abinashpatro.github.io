@@ -563,6 +563,18 @@ section {
   border-color: rgb(163, 163, 163);
 }
 
+
+/* Teaching SECTION */
+
+#teaching {
+  position: relative;
+  margin-top: 12rem;
+  margin-bottom: 12rem;
+}
+
+
+
+
 /* Publication SECTION */
 
 #publications {
