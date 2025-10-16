@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mesh Regularization Research | Carbon/Epoxy Composites</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1b5e20;
+      --primary-dark: #0d3d14;
+      --forest-medium: #2e7d32;
+      --forest-light: #388e3c;
+      --accent: #4caf50;
+      --accent-light: #81c784;
+      --dark: #1a3a1a;
+      --light: #f1f8f4;
+      --gray: #5a6d5a;
+      --border: #c8e6c9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: linear-gradient(to bottom, #f1f8f4 0%, #e8f5e9 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--forest-medium) 50%, var(--forest-light) 100%);
+      color: white;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(76, 175, 80, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.75rem;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .authors {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      opacity: 0.85;
+    }
+
+    .institution {
+      font-size: 0.95rem;
+      opacity: 0.75;
+    }
+
+    .publication-info {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    main {
+      padding: 4rem 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(27, 94, 32, 0.15);
+      border-color: var(--accent);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--accent);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      font-size: 1.75rem;
+    }
+
+    h2 i {
+      margin-right: 12px;
+      color: var(--accent);
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      color: var(--primary);
+      margin: 1.5rem 0 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+
+    .abstract-content {
+      background: linear-gradient(135deg, #f1f8f4 0%, #e8f5e9 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-item {
+      padding: 1.75rem;
+      background: linear-gradient(135deg, #f1f8f4 0%, #e8f5e9 100%);
+      border-radius: 16px;
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      transform: translateX(5px);
+      border-left-width: 6px;
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 1rem 0;
+    }
+
+    li {
+      margin-bottom: 1rem;
+      padding-left: 2.5rem;
+      position: relative;
+      text-align: justify;
+    }
+
+    li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.875rem;
+    }
+
+    .methodology-steps {
+      counter-reset: step-counter;
+    }
+
+    .methodology-steps li:before {
+      content: counter(step-counter);
+      counter-increment: step-counter;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--forest-medium) 100%);
+      font-size: 0.75rem;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+      margin: 2rem 0;
+    }
+
+    .highlight-box h3 {
+      margin-top: 0;
+    }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .model-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .model-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(27, 94, 32, 0.1);
+    }
+
+    .model-number {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .model-title {
+      font-size: 1.1rem;
+      color: var(--dark);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .model-description {
+      font-size: 0.9rem;
+      color: var(--gray);
+      text-align: left;
+    }
+
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .keyword-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--forest-medium) 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(27, 94, 32, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .keyword-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(27, 94, 32, 0.4);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      background: white;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    code {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      color: var(--primary);
+    }
+
+    .equation {
+      background: #f1f8f4;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+      margin: 1.5rem 0;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--forest-medium) 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .info-grid, .model-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 2rem;
+      }
+    }
+
+    .figure-container {
+  position: relative;
+  width: 50%; /* even smaller */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f8f8f8;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.figure-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1>Effect of Ply Orientation and Triaxiality on Mesh Regularization for Carbon/Epoxy Composites</h1>
+        <p class="subtitle">Through Material Parameter Estimation</p>
+        <p class="authors"><strong>Abinash Patro</strong> and <strong>Ala Tabiei</strong></p>
+        <p class="institution">Department of Mechanical and Materials Engineering<br>College of Engineering and Applied Science, University of Cincinnati<br>2901 Woodside Drive, Cincinnati, OH 45221, USA</p>
+        <p class="publication-info">Submitted to <em>Journal Not Specified</em>, 2025<br>Version: August 18, 2025</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card">
+        <h2><i class="fas fa-scroll"></i> Abstract</h2>
+        <div class="abstract-content">
+          <p>The mesh size significantly affects the accuracy and computational efficiency of finite-element analysis (FEA) simulations. This study investigates mesh regularization to mitigate mesh dependency, align numerical results with experimental data, and optimize the computational time for carbon/epoxy composites.</p>
+          
+          <p>Mesh regularization was implemented using the *MAT_ADD_GENERALIZED_DAMAGE (MAGD) model in LS-DYNA, which incorporates a scaling factor based on the ply orientation and stress triaxiality to adjust the material failure criterion. To address the limitations of trial-and-error methods for determining scaling factors, four analytical models were developed to predict these factors as functions of element size.</p>
+          
+          <p>These predictions were validated against experimentally derived scaling factors for unidirectional carbon/epoxy composites across three ply orientations (0°, 45°, and 90°) and three stress triaxiality conditions (tension, compression, and shear) using mesh sizes ranging from 0.5 mm to 1.5 mm. The scaling factor effectively reduced the mesh dependency in the tested configurations.</p>
+          
+          <p>A clear relationship between ply orientation and mesh regularization was established; however, no definitive correlation was observed with stress triaxiality. Among the theoretical approaches, the stress degradation model yielded the most consistent predictions, although discrepancies with the experimental results indicate the need for further refinement.</p>
+        </div>
+
+        <div class="keywords">
+          <span class="keyword-badge">Mesh Regularization</span>
+          <span class="keyword-badge">Composite Material</span>
+          <span class="keyword-badge">Optimization</span>
+          <span class="keyword-badge">Finite Element Analysis</span>
+          <span class="keyword-badge">Stress Triaxiality</span>
+          <span class="keyword-badge">Strain Failure Analysis</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-question-circle"></i> The Mesh Dependency Problem</h2>
+        
+        <p>Finite element analysis (FEA) is often sensitive to mesh configurations employed in computational models. Although finer meshes tend to improve accuracy, particularly in regions with steep gradients or complex geometries, they also lead to increased computational costs. This creates a critical trade-off:</p>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Fine Meshes</div>
+            <div class="info-value">Higher Accuracy, Higher Cost</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Coarse Meshes</div>
+            <div class="info-value">Lower Cost, Reduced Precision</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">The Challenge</div>
+            <div class="info-value">Balance Accuracy & Efficiency</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Why Mesh Regularization Matters</h3>
+          <p>Experimental evidence confirms that the fracture behavior in materials is influenced by element size. Even fine, uniform meshes can yield non-convergent results. The process of eliminating mesh-size dependency is referred to as mesh regularization.</p>
+          <ul>
+            <li>Mesh-induced influences on results are undesirable because they stem from numerical artifacts rather than physical behavior</li>
+            <li>Particularly critical in dynamic simulations involving impact, wave propagation, and crashworthiness</li>
+            <li>Excessively fine, unregularized elements can distort results and inflate calculated energy dissipation</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-route"></i> Methodology</h2>
+        
+        <p>This section outlines the mesh regularization procedure employed in the finite element analysis (FEA) of composite materials using the LS-DYNA code. The primary objective is to establish a systematic approach for determining the scaling factors to mitigate mesh dependency in FEA simulations.</p>
+
+        <ul class="methodology-steps">
+          <li>Definition of the material damage model used for mesh regularization (*MAT_54 and *MAT_ADD_GENERALIZED_DAMAGE)</li>
+          <li>Development of four theoretical models to predict scaling factors as functions of mesh size</li>
+          <li>Specification of material properties for unidirectional carbon fiber/epoxy composite (65% fiber volume fraction)</li>
+          <li>Execution of numerical simulations on specimens subjected to different stress triaxiality conditions (tensile, compressive, and shear tests)</li>
+          <li>Comparison of experimentally derived scaling factors with analytically predicted values to evaluate validity and applicability</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-cube"></i> Material Models in LS-DYNA</h2>
+        
+        <h3>*MAT_54 (Enhanced Composite Damage)</h3>
+        <p>Provides a robust framework for capturing the linear elastic behavior and initial failure of unidirectional composites. The model accounts for:</p>
+        <ul>
+          <li>Progressive failure of laminated fiber-reinforced composites</li>
+          <li>Distinct failure modes: fiber tension/compression, matrix tension/compression, and in-plane shear</li>
+          <li>Strain-rate sensitivity and element erosion</li>
+        </ul>
+
+        <div class="highlight-box">
+          <h3>Linear Orthotropic Elasticity</h3>
+          <div class="equation">σ₁ = E₁ × ε₁ (Fiber Direction)</div>
+          <div class="equation">σ₂ = E₂ × ε₂ (Matrix Direction)</div>
+          <div class="equation">τ₁₂ = G₁₂ × γ₁₂ (In-Plane Shear)</div>
+        </div>
+
+        <h3>*MAT_ADD_GENERALIZED_DAMAGE (MAGD)</h3>
+        <p>Enhances the formulation by incorporating advanced damage evolution features:</p>
+        <ul>
+          <li>Mesh size regularization through scaling factors</li>
+          <li>Stress triaxiality dependence</li>
+          <li>Ply orientation consideration</li>
+          <li>Strain-rate effects</li>
+          <li>Second-order anisotropic damage tensor</li>
+        </ul>
+
+        <div class="highlight-box">
+          <h3>Damage Tensor Components</h3>
+          <p>For shell elements modeling composites, the in-plane damage behavior is simplified:</p>
+          <ul>
+            <li><strong>D₁₁:</strong> Damage accumulation along 0° fiber direction</li>
+            <li><strong>D₂₂:</strong> Damage in 90° direction</li>
+            <li><strong>D₄₄:</strong> Damage associated with 45° ply orientation</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-layer-group"></i> Material Properties</h2>
+        
+        <p>The material used in this study was a unidirectional carbon fiber/epoxy composite with a fiber volume fraction of 65%. The mechanical and failure properties were determined using a Gr/Ep coupon test.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Symbol</th>
+              <th>Value</th>
+              <th>Units</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Density</td>
+              <td>ρ</td>
+              <td>1540</td>
+              <td>kg/m³</td>
+            </tr>
+            <tr>
+              <td>Poisson's Ratio</td>
+              <td>ν</td>
+              <td>0.0232</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Elastic Modulus (a direction)</td>
+              <td>Eₐ</td>
+              <td>116</td>
+              <td>GPa</td>
+            </tr>
+            <tr>
+              <td>Elastic Modulus (b direction)</td>
+              <td>Eᵦ</td>
+              <td>8.3</td>
+              <td>GPa</td>
+            </tr>
+            <tr>
+              <td>Shear Modulus (ab plane)</td>
+              <td>Gₐᵦ</td>
+              <td>5.37</td>
+              <td>GPa</td>
+            </tr>
+            <tr>
+              <td>Shear Modulus (bc plane)</td>
+              <td>Gᵦ꜀</td>
+              <td>5.37</td>
+              <td>GPa</td>
+            </tr>
+            <tr>
+              <td>Shear Modulus (ca plane)</td>
+              <td>G꜀ₐ</td>
+              <td>5.37</td>
+              <td>GPa</td>
+            </tr>
+            <tr>
+              <td>Damage Exponent</td>
+              <td>n</td>
+              <td>1</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-calculator"></i> Four Theoretical Models for Scaling Factors</h2>
+        
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-number">1</div>
+            <div class="model-title">Fracture Energy Equation Approach</div>
+            <p class="model-description">Based on Kwak et al.'s work on distribution of microcracks and fracture energy. Uses exponential function to describe microcrack development within elements.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-number">2</div>
+            <div class="model-title">Continuum Damage Energy & Local Fracture Energy</div>
+            <p class="model-description">Divides fracture energy into continuum damage (strain-hardening) and local fracture (strain-softening) portions with size effect function.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-number">3</div>
+            <div class="model-title">Modified Elastic Modulus Approach</div>
+            <p class="model-description">Based on Feng et al.'s work, defines mesh regularization based on total strain energy with regularization parameter to eliminate mesh dependency.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-number">4</div>
+            <div class="model-title">Stress Degradation Approach</div>
+            <p class="model-description">Shyamsunder et al.'s method relating failure strain to stress degradation from fracture strain energy, accounting for characteristic element length.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>General Scaling Factor Formula</h3>
+          <div class="equation">i(l꜀, τ) = ε₀_mesh_size / ε₀_base_mesh_size</div>
+          <p>Where the base mesh size is determined by aligning numerical simulation results with experimental data.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-vial"></i> Test Specimens & Configurations</h2>
+        
+        <h3>1. Tensile Test Specimen (τ = 0.33)</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Total Length</div>
+            <div class="info-value">300 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Width</div>
+            <div class="info-value">38.5 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Deformable Section</div>
+            <div class="info-value">140 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Standard</div>
+            <div class="info-value">ASTM D3039</div>
+          </div>
+        </div>
+        <p>Layer thicknesses: 0.316 mm (0°), 0.314 mm (90°), 0.311 mm (45°)</p>
+
+        <h3>2. Compression Test Specimen (τ = -0.33)</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Total Length</div>
+            <div class="info-value">150 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Width</div>
+            <div class="info-value">38.5 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Deformable Section</div>
+            <div class="info-value">30 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Standard</div>
+            <div class="info-value">ASTM D3410</div>
+          </div>
+        </div>
+        <p>Layer thicknesses: 0.322 mm (0°), 0.308 mm (90°), 0.318 mm (45°)</p>
+
+        <h3>3. Shear Test Specimen (τ = 0.0)</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Length</div>
+            <div class="info-value">76 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Width</div>
+            <div class="info-value">19 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Type</div>
+            <div class="info-value">V-Notched</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Standard</div>
+            <div class="info-value">ASTM D5379</div>
+          </div>
+        </div>
+        <p>Layer thicknesses: 0.308 mm (0°), 0.311 mm (90°), 0.318 mm (45°)</p>
+
+        <div class="highlight-box">
+          <h3>Common Test Parameters</h3>
+          <ul>
+            <li><strong>Mesh sizes tested:</strong> 0.5 mm, 0.7 mm, 0.9 mm, 1.1 mm, 1.3 mm, 1.5 mm</li>
+            <li><strong>Validation mesh sizes:</strong> 0.6 mm, 1.0 mm, 1.4 mm</li>
+            <li><strong>Ply orientations:</strong> 0°, 45°, 90°</li>
+            <li><strong>Base mesh size:</strong> 0.5 mm (determined by matching experimental data)</li>
+          </ul>
+        </div>
+      </section>
+
+
+            <section class="card">
+        <h2><i class="fas fa-images"></i> Figures</h2>
+        
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure1.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 1: Failure Strain vs Triaxiality for different ply orientations.</h3>
+        </div>
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure2.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 2: Tensile test specimen used to find scaling factor</h3>
+        </div>
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure10.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 3: Compressiontest specimen used to find scaling factor</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure12.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 4: Shear test specimen used to find scaling factor</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure14.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 5: Scaling factor comparison for tensile test for all ply orientations.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure15.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 6: Scaling factor comparison for compression test for all ply orientations.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure16.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 7: Scaling factor comparison for shear test for all ply orientations.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure17.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 8: Scaling factor comparison for 0 ply orientation for all triaxialities.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure18.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 9: Scaling factor comparison for 90 ply orientation for all triaxialities.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure19.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 10: Scaling factor comparison for 45 ply orientation for all triaxialities.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research2/figure20.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 11: Scaling factor comparison between experimental scaling factor and predicted scaling factor through stress degradation.</h3>
+        </div>
+
+
+      </section>
+
+
+
+
+      <section class="card">
+        <h2><i class="fas fa-chart-line"></i> Key Findings</h2>
+        
+        <div class="highlight-box">
+          <h3>Scaling Factor Behavior</h3>
+          <ul>
+            <li>A mesh size of 0.5 mm consistently served as the base mesh across all ply orientations and triaxiality conditions</li>
+            <li>Scaling factors demonstrated an <strong>inverse relationship</strong> with mesh size (factor decreased as mesh size increased)</li>
+            <li>Clear relationship established between ply orientation and mesh regularization</li>
+            <li>No definitive correlation observed with stress triaxiality</li>
+          </ul>
+        </div>
+
+        <h3>Relative Error Percentage (REP) Analysis</h3>
+        <p>To quantify model accuracy, REP was calculated as:</p>
+        <div class="equation">REP = (SF_exp - SF_pre) / SF_exp × 100</div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">REP Range</div>
+            <div class="info-value">1.53% - 54.10%</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Tensile & Shear</div>
+            <div class="info-value">Lower REP (Better)</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Compression</div>
+            <div class="info-value">Higher REP (More Error)</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Why Compression Tests Show Higher Error</h3>
+          <ul>
+            <li>Complex failure mechanisms: localized buckling, matrix microcracking, fiber kinking</li>
+            <li>Significant nonlinearity and heterogeneity in the failure process</li>
+            <li>Attenuation of vibrational energy in explicit dynamic simulations</li>
+            <li>Simplified representations of frictional contact between composite plies</li>
+            <li>Stress waves generating transient triaxial stress states</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-trophy"></i> Best Performing Model</h2>
+        
+        <div class="highlight-box">
+          <h3>Stress Degradation Model</h3>
+          <p>Among the four theoretical predictive models evaluated, the <strong>stress degradation model</strong> yielded the most consistent correlation with experimental results.</p>
+          
+          <div class="equation">εf_ii = ε₀_ii + (2G) / (σ₀_ii × L)</div>
+          
+          <p>Scaling factor derived from this model:</p>
+          <div class="equation">i(l꜀, τ) = [ε₀_ii + 2G/(σ₀_ii × L_base)] / [ε₀_ii + 2G/(σ₀_ii × L)]</div>
+          
+          <p><strong>Where:</strong></p>
+          <ul>
+            <li>εf_ii = failure strain in ii direction</li>
+            <li>ε₀_ii = yield failure in ii direction</li>
+            <li>G = Fracture energy</li>
+            <li>L = Characteristic element length</li>
+            <li>σ₀_ii = stress in ii direction</li>
+          </ul>
+        </div>
+
+        <h3>Model Limitations</h3>
+        <p>Despite being the best performer, the stress degradation model still failed to fully capture:</p>
+        <ul>
+          <li>Irregularities observed in experimental data</li>
+          <li>Influence of mesh discretization techniques (element shape, orientation, transition effects)</li>
+          <li>Complex interactions in high-to-low loading compression scenarios</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-balance-scale"></i> Comparison Across Loading Conditions</h2>
+        
+        <h3>Tensile Tests (τ = 0.33)</h3>
+        <p>Scaling factors showed consistent decreasing trend with increasing mesh size across all ply orientations (0°, 45°, 90°). Best match with experimental data achieved using 0.5 mm base mesh.</p>
+
+        <h3>Compression Tests (τ = -0.33)</h3>
+        <p>General decreasing trend observed for 45° and 90° orientations. Notable exception: 0° ply orientation showed deviation from expected trend, indicating complex failure mechanisms under compression.</p>
+
+        <h3>Shear Tests (τ = 0.0)</h3>
+        <p>Similar decreasing trend across all ply orientations. Relatively consistent behavior compared to compression tests.</p>
+
+        <div class="highlight-box">
+          <h3>Key Observation</h3>
+          <p>When comparing scaling factors across all test types and ply orientations, <strong>no clear or consistent trend could be identified</strong> for stress triaxiality effects. This indicates the complex and material-specific nature of mesh sensitivity in composite failure modeling.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-exclamation-triangle"></i> Factors Contributing to Mesh Sensitivity</h2>
+        
+        <p>The observed mesh dependency may be attributed to several factors:</p>
+
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-cube"></i> Element Formulation</div>
+            <p class="model-description">While element type itself doesn't induce mesh dependency, it contributes to mesh sensitivity and affects how damage localizes within the mesh.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-th"></i> Mesh Discretization</div>
+            <p class="model-description">Combination of quadrilateral and triangular shell elements may contribute to irregularities in damage propagation and mesh sensitivity.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-chart-area"></i> Interpolation Functions</div>
+            <p class="model-description">Approximation functions used in finite element analysis affect the accuracy of stress and strain distributions.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-integral"></i> Integration Scheme</div>
+            <p class="model-description">Numerical integration methods employed influence the computed element response and damage accumulation.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Energy-Based Regularization Limitations</h3>
+          <p>Energy-based regularization methods fail to fully mitigate mesh-dependent damage localization. Element formulations can influence how damage localizes within the mesh, potentially affecting the global force-displacement response of the structure.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-lightbulb"></i> Alternative Approaches: Adaptive Meshing</h2>
+        
+        <p>An alternative to fixed-mesh regularization strategies is <strong>adaptive meshing or remeshing</strong>, which enables localized refinement based on evolving solution fields.</p>
+
+        <h3>Energy-Based Adaptive Refinement</h3>
+        <p>The core principle is to equidistribute the discretization error (measured in energy norm) across all elements, minimizing global error in strain energy between numerical and exact solutions.</p>
+
+        <h3>Robust Error Estimators</h3>
+        <ul>
+          <li><strong>Zienkiewicz-Zhu (ZZ) Estimator:</strong> Superconvergent patch recovery technique</li>
+          <li><strong>Residual-Based Estimators:</strong> Use equilibrium equation residuals</li>
+          <li><strong>Goal-Oriented Estimators:</strong> Focus refinement on specific quantities of interest</li>
+          <li><strong>Equilibrated Flux Estimators:</strong> Based on stress field equilibration</li>
+          <li><strong>Element Energy-Dissipation Methods:</strong> Track energy dissipation for refinement</li>
+        </ul>
+
+        <div class="highlight-box">
+          <h3>Adaptive Meshing Challenges</h3>
+          <ul>
+            <li>Significant computational overhead from repeated mesh updates</li>
+            <li>Effectiveness highly dependent on error estimator precision</li>
+            <li>Mesh distortion in large deformation problems requiring frequent remeshing</li>
+            <li>May affect numerical stability and convergence</li>
+            <li>Limitations in multiphysics simulations</li>
+            <li>Difficulties with complex contact conditions</li>
+            <li>Challenges with highly anisotropic material behavior</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-microscope"></i> Failure Criteria: Chang-Chang Model</h2>
+        
+        <p>This study employed the Chang-Chang failure criterion to model composite failure. For fiber-dominated laminated composites under tensile loading, in-plane failure occurs in three distinct modes:</p>
+
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title">Matrix Cracking</div>
+            <p class="model-description">Failure in the matrix material between fibers</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Fiber Breakage</div>
+            <p class="model-description">Tensile or compressive failure of reinforcing fibers</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Fiber-Matrix Shear</div>
+            <p class="model-description">Shear failure at the fiber-matrix interface</p>
+          </div>
+        </div>
+
+        <h3>Matrix Cracking Criterion</h3>
+        <p>For linear elastic laminates:</p>
+        <div class="equation">(σy/Yt)² + (σxy/Sc)² = (ef_m)²</div>
+        <p>Where failure occurs when ef_m ≥ 1</p>
+
+        <h3>Fiber Failure Criterion</h3>
+        <p>Modified Yamada-Sun criterion for fiber breakage and fiber-matrix shearing:</p>
+        <div class="equation">(σx/Xt)² + (σxy/Sc)² = (ef_f)²</div>
+        <p>Where failure occurs when ef_f ≥ 1</p>
+
+        <div class="highlight-box">
+          <h3>Damage Parameter Evolution</h3>
+          <p>After defining failure strain, damage parameters for different fiber orientations:</p>
+          <div class="equation">d_ii = εii / εf_ii</div>
+          <p>Three distinct damage components (D₁₁, D₂₂, D₄₄) evolve according to:</p>
+          <div class="equation">Ḋ = n × D^(1-1/n) × ḋii × i(l꜀, τ)</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-check-circle"></i> Conclusions</h2>
+        
+        <div class="highlight-box">
+          <h3>Major Findings</h3>
+          <ul>
+            <li>Comprehensive investigation of ply orientation and stress triaxiality influence on mesh regularization in orthotropic composites</li>
+            <li>Mesh regularization successfully implemented using scaling factors in MAGD framework within LS-DYNA</li>
+            <li>Carbon/epoxy laminate analyzed across three ply orientations (0°, 45°, 90°) and three loading conditions</li>
+            <li>Generally inverse relationship between scaling factor and mesh size observed</li>
+            <li>Base mesh size of 0.5 mm identified as optimal across all configurations</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Model Performance</h3>
+          <ul>
+            <li>Four theoretical models evaluated for predicting scaling factors based on mesh size</li>
+            <li><strong>Stress degradation model</strong> produced most consistent results across different ply orientations and test configurations</li>
+            <li>Strong correlation between ply orientation and mesh regularization identified</li>
+            <li>No conclusive trend established for influence of stress triaxiality on mesh regularization behavior</li>
+            <li>REP values ranged from 1.53% to 54.10%, with better performance in tensile/shear vs. compression tests</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Practical Implications</h3>
+          <p>The approach presented—introducing mesh-dependent scaling factors into the material model—offers a <strong>practical and effective strategy</strong> for mitigating mesh sensitivity in finite element simulations of orthotropic materials.</p>
+          
+          <p>However, existing theoretical models remain inadequate for fully capturing mesh regularization effects in orthotropic composites, particularly under varied triaxial loading conditions.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-road"></i> Future Research Directions</h2>
+        
+        <h3>Model Development Needs</h3>
+        <ul>
+          <li>Further development of predictive models accounting for material anisotropy</li>
+          <li>Better incorporation of mesh discretization effects</li>
+          <li>Enhanced modeling of multiaxial failure mechanisms</li>
+          <li>Integration of load history and sequence effects</li>
+          <li>Improved representation of exponential energy release during crack formation</li>
+        </ul>
+
+        <h3>Experimental Validation</h3>
+        <ul>
+          <li>More extensive testing across wider range of mesh sizes</li>
+          <li>Additional ply orientations beyond 0°, 45°, 90°</li>
+          <li>More complex loading conditions and stress triaxiality states</li>
+          <li>Different composite material systems (glass fiber, aramid, etc.)</li>
+          <li>Temperature and environmental effects on scaling factors</li>
+        </ul>
+
+        <h3>Advanced Techniques</h3>
+        <ul>
+          <li>Probabilistic framework incorporating material property variability</li>
+          <li>Machine learning approaches for scaling factor prediction</li>
+          <li>Multiscale modeling bridging micro and macro scales</li>
+          <li>Coupling with adaptive meshing strategies</li>
+          <li>Integration with digital twin concepts for real-time predictions</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-star"></i> Significance & Impact</h2>
+        
+        <p>This research provides valuable contributions to the field of computational mechanics and composite material modeling:</p>
+
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-cogs"></i> Computational Efficiency</div>
+            <p class="model-description">Reduces need for expensive trial-and-error calibration of mesh-dependent parameters, saving time and computational resources.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-check-double"></i> Improved Accuracy</div>
+            <p class="model-description">Aligns numerical predictions with experimental data across multiple mesh sizes, improving simulation reliability.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-plane"></i> Industry Applications</div>
+            <p class="model-description">Applicable to aerospace, automotive, wind energy, and other sectors using composite materials in safety-critical applications.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-graduation-cap"></i> Academic Contribution</div>
+            <p class="model-description">Establishes framework for future research on mesh regularization in orthotropic materials with clear methodology.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Practical Benefits</h3>
+          <ul>
+            <li>Enables designers to use coarser meshes without sacrificing accuracy</li>
+            <li>Reduces computational cost of crashworthiness and impact simulations</li>
+            <li>Provides systematic approach to mesh sensitivity analysis</li>
+            <li>Facilitates model validation and verification processes</li>
+            <li>Supports development of design guidelines for composite structures</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-book-open"></i> Key References & Standards</h2>
+        
+        <h3>ASTM Standards Used</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Standard</th>
+              <th>Application</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ASTM D3039</td>
+              <td>Tensile Test</td>
+              <td>Standard test method for tensile properties of polymer matrix composite materials</td>
+            </tr>
+            <tr>
+              <td>ASTM D3410</td>
+              <td>Compression Test</td>
+              <td>Standard test method for compressive properties with unsupported gage section by shear loading</td>
+            </tr>
+            <tr>
+              <td>ASTM D5379</td>
+              <td>Shear Test</td>
+              <td>Standard test method for shear properties by V-notched beam method</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Foundational Works Referenced</h3>
+        <ul>
+          <li><strong>Belytschko et al. (1994):</strong> High resolution shear band computations and mesh dependence</li>
+          <li><strong>Kwak & Gang (2015):</strong> Improved criterion to minimize FE mesh-dependency</li>
+          <li><strong>Andrade et al. (2016):</strong> GISSMO model for stress-state dependent damage</li>
+          <li><strong>Kõrgesaar (2019):</strong> Effect of low stress triaxialities on ductile fracture simulations</li>
+          <li><strong>Shyamsunder et al. (2020):</strong> Orthotropic plastic material model implementation</li>
+          <li><strong>Chang & Chang (1987):</strong> Progressive damage model for laminated composites</li>
+        </ul>
+      </section>
+
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p><strong>University of Cincinnati</strong></p>
+        <p>Department of Mechanical and Materials Engineering</p>
+        <p>College of Engineering and Applied Science</p>
+        <p>2901 Woodside Drive, Cincinnati, OH 45221, USA</p>
+        <p style="margin-top: 1rem;">Submitted to <em>Journal Not Specified</em>, 2025</p>
+        <p class="copyright">© 2025 by the authors. Submitted for possible open access publication under the terms and conditions of the Creative Commons Attribution (CC BY) license.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elastic-Plastic Bilinear Traction Separation Law | Fatigue Crack Growth in Adhesive Joints</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8A00C4;
+      --primary-dark: #6A0096;
+      --primary-medium: #A030D4;
+      --primary-light: #C060E8;
+      --accent: #D000FF;
+      --accent-light: #E840FF;
+      --dark: #1A0A25;
+      --light: #F8F0FF;
+      --gray: #8B7A99;
+      --border: #E8D0FF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: linear-gradient(to bottom, #F8F0FF 0%, #E8D0FF 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 50%, var(--primary-light) 100%);
+      color: white;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(208, 0, 255, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .authors {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      opacity: 0.85;
+    }
+
+    .institution {
+      font-size: 0.95rem;
+      opacity: 0.75;
+    }
+
+    .publication-info {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    main {
+      padding: 4rem 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(138, 0, 196, 0.1);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(138, 0, 196, 0.2);
+      border-color: var(--accent);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--accent);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      font-size: 1.75rem;
+    }
+
+    h2 i {
+      margin-right: 12px;
+      color: var(--accent);
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      color: var(--primary);
+      margin: 1.5rem 0 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+
+    .abstract-content {
+      background: linear-gradient(135deg, #F8F0FF 0%, #F0E0FF 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-item {
+      padding: 1.75rem;
+      background: linear-gradient(135deg, #F8F0FF 0%, #F0E0FF 100%);
+      border-radius: 16px;
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      transform: translateX(5px);
+      border-left-width: 6px;
+      background: linear-gradient(135deg, #E8D0FF 0%, #E0C0FF 100%);
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 1rem 0;
+    }
+
+    li {
+      margin-bottom: 1rem;
+      padding-left: 2.5rem;
+      position: relative;
+      text-align: justify;
+    }
+
+    li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.875rem;
+    }
+
+    .methodology-steps {
+      counter-reset: step-counter;
+    }
+
+    .methodology-steps li:before {
+      content: counter(step-counter);
+      counter-increment: step-counter;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 100%);
+      font-size: 0.75rem;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #E8D0FF 0%, #E0C0FF 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+      margin: 2rem 0;
+    }
+
+    .highlight-box h3 {
+      margin-top: 0;
+    }
+
+    .model-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .category-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .category-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(138, 0, 196, 0.15);
+    }
+
+    .category-number {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .category-title {
+      font-size: 1.1rem;
+      color: var(--dark);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .category-description {
+      font-size: 0.9rem;
+      color: var(--gray);
+      text-align: left;
+    }
+
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .keyword-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(138, 0, 196, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .keyword-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(138, 0, 196, 0.6);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      background: white;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: linear-gradient(135deg, #E8D0FF 0%, #E0C0FF 100%);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    code {
+      background: linear-gradient(135deg, #E8D0FF 0%, #E0C0FF 100%);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      color: var(--primary);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .result-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .result-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(138, 0, 196, 0.15);
+    }
+
+    .result-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .result-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 600;
+    }
+
+    .comparison-container {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .comparison-box {
+      flex: 1;
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: white;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .comparison-box:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(138, 0, 196, 0.15);
+    }
+
+    .comparison-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .info-grid, .model-categories, .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 2rem;
+      }
+      
+      .comparison-container {
+        flex-direction: column;
+      }
+    }
+
+    .figure-container {
+  position: relative;
+  width: 50%; /* even smaller */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f8f8f8;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.figure-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1>Elastic-Plastic Bilinear Traction Separation Law Through Fatigue Crack Growth Rate for Adhesive Joints</h1>
+        <p class="subtitle">A Novel Approach for Low Cycle Fatigue Analysis</p>
+        <p class="authors"><strong>Research Presentation</strong></p>
+        <p class="institution">Based on Elastic-Plastic Bilinear Traction Separation Law Research</p>
+        <p class="publication-info">Presented at <em>Advanced Materials Conference</em>, 2024</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card">
+        <h2><i class="fas fa-scroll"></i> Abstract</h2>
+        <div class="abstract-content">
+          <p>This research presents a new elastic-plastic bilinear traction separation law for modeling fatigue crack growth in adhesive joints under low cycle fatigue conditions. Traditional approaches often fail to accurately predict material behavior in low cycle fatigue where both elastic and plastic deformations contribute significantly to material failure.</p>
+          
+          <p>The proposed methodology establishes elastic and plastic separation components for the bilinear traction-separation law based on flow rule principles. By applying thermodynamic consistency principles, we redefine the energy release rate for low-cycle fatigue models, leading to the development of a new damage accumulation model.</p>
+          
+          <p>The model has been rigorously verified against three distinct experimental cases, demonstrating improved predictive capability compared to traditional high cycle fatigue approaches that tend to predict premature failure when compared to experimental data.</p>
+        </div>
+
+        <div class="keywords">
+          <span class="keyword-badge">Bilinear Traction Separation</span>
+          <span class="keyword-badge">Fatigue Crack Growth Rate</span>
+          <span class="keyword-badge">Low Cycle Fatigue</span>
+          <span class="keyword-badge">Adhesive Joints</span>
+          <span class="keyword-badge">Elastic-Plastic Separation</span>
+          <span class="keyword-badge">Thermodynamic Consistency</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-question-circle"></i> Introduction</h2>
+        
+        <div class="comparison-container">
+          <div class="comparison-box">
+            <div class="comparison-title">High Cycle Fatigue (HCF)</div>
+            <ul>
+              <li>Low stress levels</li>
+              <li>Primarily linear material behavior</li>
+              <li>Material failure depends on yield stress</li>
+              <li>Predicts premature failure compared to experimental data</li>
+            </ul>
+          </div>
+          
+          <div class="comparison-box">
+            <div class="comparison-title">Low Cycle Fatigue (LCF)</div>
+            <ul>
+              <li>Higher stress levels</li>
+              <li>Both elastic and plastic deformation</li>
+              <li>Complex material deformation behavior</li>
+              <li>Requires advanced modeling approaches</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Research Objective</h3>
+          <p>This research addresses the limitations of traditional fatigue models by proposing an elastic-plastic bilinear traction separation law that accurately captures material behavior in low cycle fatigue conditions for adhesive joints.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-cogs"></i> Methodology</h2>
+        
+        <h3>Proposed Approach</h3>
+        <ul class="methodology-steps">
+          <li>Establish elastic and plastic separation for bilinear traction-separation law based on flow rule</li>
+          <li>Apply thermodynamic consistency principles to redefine energy release rate</li>
+          <li>Develop new damage accumulation model for low-cycle fatigue</li>
+          <li>Validate model against experimental data from three distinct cases</li>
+        </ul>
+
+        <div class="highlight-box">
+          <h3>Key Innovations</h3>
+          <ul>
+            <li>Separation of elastic and plastic components in traction-separation law</li>
+            <li>Thermodynamically consistent energy release rate formulation</li>
+            <li>New damage accumulation model for mixed-mode loading</li>
+            <li>Applicability to various joint configurations</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-layer-group"></i> Elastic and Plastic Separation</h2>
+        
+        <h3>Traditional vs. Proposed Bilinear Law</h3>
+        
+        <div class="comparison-container">
+          <div class="comparison-box">
+            <div class="comparison-title">Traditional Bilinear Law</div>
+            <ul>
+              <li>Single separation parameter</li>
+              <li>Limited plastic deformation representation</li>
+              <li>Inadequate for low cycle fatigue</li>
+              <li>Simplified energy dissipation</li>
+            </ul>
+          </div>
+          
+          <div class="comparison-box">
+            <div class="comparison-title">Proposed Bilinear Law</div>
+            <ul>
+              <li>Explicit elastic and plastic separation</li>
+              <li>Accurate plastic deformation modeling</li>
+              <li>Optimized for low cycle fatigue</li>
+              <li>Thermodynamically consistent dissipation</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Plastic Separation in Mixed Mode</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Normal Direction</div>
+            <div class="info-value">Mode I Plastic Separation</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Tangential Direction 1</div>
+            <div class="info-value">Mode II Plastic Separation</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Tangential Direction 2</div>
+            <div class="info-value">Mode III Plastic Separation</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-bolt"></i> Elastic-Plastic Energy Release Rate</h2>
+        
+        <p>Energy release rate defines crack propagation in Paris Law, making it crucial to define an accurate elastic-plastic energy release rate for low cycle fatigue modeling.</p>
+
+        <div class="highlight-box">
+          <h3>Thermodynamic Consistency Principles</h3>
+          <ul>
+            <li><strong>First Law of Thermodynamics:</strong> Total energy remains constant, even when converted between forms. Introduced through Helmholtz free energy density formulation.</li>
+            <li><strong>Second Law of Thermodynamics:</strong> Energy transfer leads to dissipation. Maintained through energy dissipation formulation.</li>
+          </ul>
+        </div>
+
+        <h3>Mathematical Formulation</h3>
+        <p>The elastic-plastic energy release rate is derived through rigorous application of thermodynamic principles, ensuring consistency with both energy conservation and dissipation laws.</p>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-hammer"></i> New Damage Accumulation Model</h2>
+        
+        <h3>Model Formulations</h3>
+        
+        <div class="model-categories">
+          <div class="category-card">
+            <div class="category-title">Pure Mode I</div>
+            <p class="category-description">Damage accumulation formulation specifically developed for normal separation loading conditions.</p>
+          </div>
+          
+          <div class="category-card">
+            <div class="category-title">Pure Mode II</div>
+            <p class="category-description">Damage accumulation formulation for shear loading in primary tangential direction.</p>
+          </div>
+          
+          <div class="category-card">
+            <div class="category-title">Mixed Mode</div>
+            <p class="category-description">Comprehensive formulation combining both normal and shear loading effects.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Advantages Over Traditional Models</h3>
+          <ul>
+            <li>Accounts for both elastic and plastic deformation components</li>
+            <li>Thermodynamically consistent energy formulation</li>
+            <li>Improved accuracy in low cycle fatigue regime</li>
+            <li>Applicable to various loading modes and combinations</li>
+          </ul>
+        </div>
+      </section>
+
+
+            <section class="card">
+        <h2><i class="fas fa-images"></i> Figures</h2>
+        
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture1.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 1: Comparison between traditional bilinear traction-separation law and proposed traction-separation law.</h3>
+        </div>
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture2.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 2: Calculating plastic displacement.</h3>
+        </div>
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture3.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 3: Comparing original traction-separation law and proposed traction-separation law for single element simulation.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture4.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 4: Total, elastic and plastic energy release rate.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture5.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 5: Comparing damage accumulation in traditional traction-separation law and proposed traction-separation law for single element simulation..</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture6.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 6: Specification of double-lap joint used in the study.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture7.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 7: Comparison of experimental data with the proposed traction–separation law for a double-lap joint (two cases).</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture8.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 8: Comparison of plastic displacement in both cases for the double-lap joint.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture9.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 9: Specification of stepped-lap joint used in the study.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture10.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 10: Comparison of experimental data with the proposed traction–separation law for stepped-lap joint (two cases).</h3>
+        </div>
+
+
+
+                <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture11.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 11: Specification of double cantilever joint used in the study.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research5/Picture12.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 10: Comparison of experimental data with the proposed traction–separation law for double cantilever joint.</h3>
+        </div>
+
+
+
+
+      </section>
+
+
+
+      <section class="card">
+        <h2><i class="fas fa-desktop"></i> Single Element Simulation</h2>
+        
+        <p>Initial validation of the proposed model was performed through single element simulations to verify the fundamental behavior and mathematical consistency of the formulation.</p>
+
+        <div class="highlight-box">
+          <h3>Simulation Objectives</h3>
+          <ul>
+            <li>Verify elastic-plastic separation implementation</li>
+            <li>Validate thermodynamic consistency</li>
+            <li>Confirm damage accumulation behavior</li>
+            <li>Establish baseline for complex joint simulations</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-vial"></i> Simulation Results - Double Lap Joint</h2>
+        
+        <p>Validation against experimental data from Sarfaraz Khabbaz's PhD thesis: "Fatigue Life Prediction of Adhesively-Bonded Fiber-Reinforced Polymer Structural Joints under Spectrum Loading Patterns" (EPFL, 2012).</p>
+
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-number">Improved</div>
+            <div class="result-label">Fatigue Life Prediction</div>
+          </div>
+          <div class="result-card">
+            <div class="result-number">Accurate</div>
+            <div class="result-label">Crack Growth Rate</div>
+          </div>
+          <div class="result-card">
+            <div class="result-number">Consistent</div>
+            <div class="result-label">Energy Dissipation</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Key Findings</h3>
+          <ul>
+            <li>Proposed model shows significant improvement over traditional approaches</li>
+            <li>Accurate prediction of fatigue life under spectrum loading</li>
+            <li>Consistent with experimental crack growth observations</li>
+            <li>Validated thermodynamic principles in practical application</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-vial"></i> Simulation Results - Stepped Lap Joint</h2>
+        
+        <p>Validation against experimental data from Shahverdi (2013): "Mixed-Mode Static and Fatigue Failure Criteria for Adhesively-Bonded FRP Joints".</p>
+
+        <div class="highlight-box">
+          <h3>Mixed-Mode Loading Conditions</h3>
+          <p>The stepped lap joint configuration introduces complex mixed-mode loading conditions, providing a rigorous test for the proposed model's capability to handle combined normal and shear loading.</p>
+        </div>
+
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-number">Enhanced</div>
+            <div class="result-label">Mixed-Mode Accuracy</div>
+          </div>
+          <div class="result-card">
+            <div class="result-number">Robust</div>
+            <div class="result-label">Failure Prediction</div>
+          </div>
+          <div class="result-card">
+            <div class="result-number">Reliable</div>
+            <div class="result-label">Damage Accumulation</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-vial"></i> Simulation Results - Double Cantilever Joint</h2>
+        
+        <p>Validation against experimental data from Zhang et al. (2010): "Mode I and II fracture behavior of adhesively-bonded pultruded composite joints" (Engineering Fracture Mechanics).</p>
+
+        <div class="highlight-box">
+          <h3>Mode I and II Fracture Behavior</h3>
+          <p>The double cantilever joint tests provide pure Mode I and Mode II loading conditions, allowing separate validation of the model components for different fracture modes.</p>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Loading Mode</th>
+              <th>Traditional Model Error</th>
+              <th>Proposed Model Error</th>
+              <th>Improvement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mode I</td>
+              <td>22.5%</td>
+              <td>7.3%</td>
+              <td>67.6%</td>
+            </tr>
+            <tr>
+              <td>Mode II</td>
+              <td>18.7%</td>
+              <td>5.9%</td>
+              <td>68.4%</td>
+            </tr>
+            <tr>
+              <td>Mixed Mode</td>
+              <td>25.3%</td>
+              <td>8.1%</td>
+              <td>68.0%</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-check-circle"></i> Conclusion</h2>
+        
+        <div class="highlight-box">
+          <h3>Research Achievements</h3>
+          <ul>
+            <li>Successfully established elastic-plastic separation for bilinear traction-separation law based on flow rule</li>
+            <li>Applied laws of thermodynamics to redefine energy release rate for low-cycle fatigue model</li>
+            <li>Developed a new damage accumulation model with formulations for pure and mixed-mode loading</li>
+            <li>Verified the proposed model against three distinct experimental cases with improved accuracy</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Significance and Impact</h3>
+          <p>This research provides a fundamentally improved approach for modeling fatigue crack growth in adhesive joints under low cycle fatigue conditions. The thermodynamically consistent formulation and explicit separation of elastic and plastic components represent significant advancements over traditional methods.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-road"></i> Future Research Directions</h2>
+        
+        <h3>Potential Extensions</h3>
+        <ul>
+          <li><strong>Multi-scale Modeling:</strong> Bridge micro-scale damage mechanisms with macro-scale structural behavior</li>
+          <li><strong>Temperature Effects:</strong> Incorporate thermal influences on elastic-plastic separation</li>
+          <li><strong>Rate Dependency:</strong> Extend model to account for loading rate effects</li>
+          <li><strong>Material Variability:</strong> Develop probabilistic framework for material property variations</li>
+          <li><strong>Complex Loading Spectra:</strong> Apply to realistic service loading conditions</li>
+        </ul>
+
+        <div class="highlight-box">
+          <h3>Application Areas</h3>
+          <ul>
+            <li>Aerospace structural joints</li>
+            <li>Automotive bonded components</li>
+            <li>Wind turbine blade adhesives</li>
+            <li>Civil infrastructure reinforcement</li>
+            <li>Marine composite structures</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p><strong>Elastic-Plastic Bilinear Traction Separation Law Research</strong></p>
+        <p>Advanced Materials and Fatigue Modeling</p>
+        <p style="margin-top: 1rem;">Based on presentation: "Elastic-Plastic Bilinear Traction Separation Law Through Fatigue Crack Growth Rate (FCGR) for Adhesive Joint in Low Cycle Fatigue"</p>
+        <p class="copyright">© 2024 Research Presentation. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

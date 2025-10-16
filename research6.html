@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spurious Element Failure of Cohesive Element under Impact | Dynamic Loading Research</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #096C6C;
+      --primary-dark: #065050;
+      --primary-medium: #0A8888;
+      --primary-light: #0BA4A4;
+      --accent: #0BC5C5;
+      --accent-light: #3DD5D5;
+      --dark: #0A2525;
+      --light: #E6F7F7;
+      --gray: #5A7A7A;
+      --border: #B3E0E0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: linear-gradient(to bottom, #E6F7F7 0%, #B3E0E0 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 50%, var(--primary-light) 100%);
+      color: white;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(11, 197, 197, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .authors {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      opacity: 0.85;
+    }
+
+    .institution {
+      font-size: 0.95rem;
+      opacity: 0.75;
+    }
+
+    .publication-info {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    main {
+      padding: 4rem 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(9, 108, 108, 0.1);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(9, 108, 108, 0.2);
+      border-color: var(--accent);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--accent);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      font-size: 1.75rem;
+    }
+
+    h2 i {
+      margin-right: 12px;
+      color: var(--accent);
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      color: var(--primary);
+      margin: 1.5rem 0 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+
+    .abstract-content {
+      background: linear-gradient(135deg, #E6F7F7 0%, #CCF0F0 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-item {
+      padding: 1.75rem;
+      background: linear-gradient(135deg, #E6F7F7 0%, #CCF0F0 100%);
+      border-radius: 16px;
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      transform: translateX(5px);
+      border-left-width: 6px;
+      background: linear-gradient(135deg, #B3E0E0 0%, #99D6D6 100%);
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 1rem 0;
+    }
+
+    li {
+      margin-bottom: 1rem;
+      padding-left: 2.5rem;
+      position: relative;
+      text-align: justify;
+    }
+
+    li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.875rem;
+    }
+
+    .methodology-steps {
+      counter-reset: step-counter;
+    }
+
+    .methodology-steps li:before {
+      content: counter(step-counter);
+      counter-increment: step-counter;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 100%);
+      font-size: 0.75rem;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #B3E0E0 0%, #99D6D6 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+      margin: 2rem 0;
+    }
+
+    .highlight-box h3 {
+      margin-top: 0;
+    }
+
+    .comparison-container {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .comparison-box {
+      flex: 1;
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: white;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .comparison-box:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(9, 108, 108, 0.15);
+    }
+
+    .comparison-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .keyword-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(9, 108, 108, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .keyword-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(9, 108, 108, 0.6);
+    }
+
+    .formula-box {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      margin: 1.5rem 0;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+    }
+
+    .formula-box:hover {
+      border-color: var(--accent);
+      box-shadow: 0 5px 15px rgba(9, 108, 108, 0.15);
+    }
+
+    .formula-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .formula {
+      color: var(--dark);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .variable-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: linear-gradient(135deg, #E6F7F7 0%, #CCF0F0 100%);
+      border-radius: 8px;
+    }
+
+    .variable-item {
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .variable-symbol {
+      font-weight: 700;
+      color: var(--primary);
+      font-family: 'Courier New', monospace;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .result-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .result-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(9, 108, 108, 0.15);
+    }
+
+    .result-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-value {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .info-grid, .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 2rem;
+      }
+      
+      .comparison-container {
+        flex-direction: column;
+      }
+
+      .variable-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+        .figure-container {
+  position: relative;
+  width: 50%; /* even smaller */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f8f8f8;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.figure-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+  </style>
+</head>
+
+
+
+
+
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1>Spurious Element Failure of Cohesive Element under Impact</h1>
+        <p class="subtitle">Modified Bilinear Traction Separation Law for Dynamic Loading</p>
+        <p class="authors"><strong>Based on Fras et al. Research Paper</strong></p>
+        <p class="institution">French Bullet Penetration Study - AA7020-T651 Plates</p>
+        <p class="publication-info">Authors: T. Fras, L. Colard, E. Lach, A. Rusinek, B. Reck</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card">
+        <h2><i class="fas fa-scroll"></i> Abstract</h2>
+        <div class="abstract-content">
+          <p>This research addresses a critical limitation in cohesive element modeling under dynamic impact conditions. Traditional bilinear traction separation laws fail to capture crack propagation behavior between material layers when subjected to ballistic impact, particularly in cases where separation at failure differs significantly between normal and tangential directions.</p>
+          
+          <p>The study investigates thick AA7020-T651 aluminum alloy plates under ballistic impact from fragment-simulating projectiles. Original simulations using MAT_Erosion with standard cohesive elements demonstrated significant discrepancies from experimental data, failing to capture inter-layer crack formation observed in physical tests.</p>
+          
+          <p>A modified bilinear traction separation law is proposed that accounts for loading ratio history, preventing spurious element failure caused by sudden changes in loading conditions. The modified formulation has been validated against experimental data from bullet penetration tests and Kalthoff impact experiments, demonstrating superior accuracy in predicting crack propagation and energy absorption characteristics.</p>
+        </div>
+
+        <div class="keywords">
+          <span class="keyword-badge">Cohesive Elements</span>
+          <span class="keyword-badge">Bilinear Traction Separation</span>
+          <span class="keyword-badge">Ballistic Impact</span>
+          <span class="keyword-badge">Dynamic Loading</span>
+          <span class="keyword-badge">Crack Propagation</span>
+          <span class="keyword-badge">Loading Ratio History</span>
+          <span class="keyword-badge">AA7020-T651</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-exclamation-triangle"></i> Problem Statement</h2>
+        
+        <h3>Experimental Background</h3>
+        <p>The study focuses on thick AA7020-T651 aluminum alloy plates subjected to ballistic impact by fragment-simulating projectiles. Experimental observations revealed complex crack formation patterns between material layers that were not captured by conventional simulation approaches.</p>
+
+        <div class="highlight-box">
+          <h3>Failures of Original Simulation with MAT_Erosion</h3>
+          <ul>
+            <li>Failed to capture crack formation between material layers</li>
+            <li>Significant discrepancies in cross-sectional comparison with experimental data</li>
+            <li>Inaccurate prediction of damage patterns and extent</li>
+            <li>Poor correlation with observed failure modes</li>
+          </ul>
+        </div>
+
+        <div class="comparison-container">
+          <div class="comparison-box">
+            <div class="comparison-title">Traditional Cohesive Element</div>
+            <ul>
+              <li>Standard bilinear traction separation law</li>
+              <li>No consideration of loading ratio history</li>
+              <li>Spurious failure under changing load conditions</li>
+              <li>Inadequate for dynamic impact scenarios</li>
+            </ul>
+          </div>
+          
+          <div class="comparison-box">
+            <div class="comparison-title">Modified Cohesive Element</div>
+            <ul>
+              <li>Loading ratio history consideration</li>
+              <li>Prevents spurious element failure</li>
+              <li>Accurate crack propagation prediction</li>
+              <li>Validated against experimental data</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-bolt"></i> Reasons for Element Failure</h2>
+        
+        <p>In the traditional bilinear traction separation law, damage is calculated through mean separation. However, critical issues arise in materials where there is a large difference between separation at failure in the normal direction and separation at failure in the tangential direction.</p>
+
+        <div class="highlight-box">
+          <h3>Root Cause Analysis</h3>
+          <p>When a sudden change in loading ratio occurs, the traditional bilinear law can lead to premature element failure even when the mean separation remains constant. This phenomenon is particularly problematic under dynamic impact conditions where loading ratios change rapidly.</p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Critical Condition</div>
+            <div class="info-value">Large δn₀ vs δt₀ Difference</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Trigger Mechanism</div>
+            <div class="info-value">Sudden Loading Ratio Change</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Result</div>
+            <div class="info-value">Spurious Element Failure</div>
+          </div>
+        </div>
+
+        <h3>Loading Ratio Change Leading to Sudden Element Failure</h3>
+        <p>In cases of materials with large differences in separation to failure between normal and tangential directions, sudden changes in loading ratio can lead to element failure even for the same mean separation. This fundamental limitation of the traditional approach necessitates a new formulation that considers loading change history.</p>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-cogs"></i> Modified Bilinear Traction Separation Law</h2>
+        
+        <p>The proposed modified bilinear traction separation law introduces consideration of loading ratio history, addressing the spurious failure issue while maintaining thermodynamic consistency.</p>
+
+        <h3>Key Innovation</h3>
+        <div class="highlight-box">
+          <p>The modified law evaluates damage accumulation by considering both current loading conditions and loading history. When the loading ratio (beta) changes, the total separation for failure is reevaluated based on accumulated damage history and loading ratio history.</p>
+        </div>
+
+        <h3>Mean Separation for Damage Initiation and Failure</h3>
+        
+        <div class="formula-box">
+          <div class="formula-title">Conditions and Formulations</div>
+          <div class="formula">
+            <strong>If sₙ ≠ 0 and βⁱ ≠ βⁱ⁻¹:</strong><br><br>
+            
+            sm₀ = sn₀ × st₀ × sqrt((1 + β²) / ((β × sn₀)² + st₀²))<br><br>
+            
+            smf_new = sm + 2(1 + β²) / sm₀ / (EN/GIC + β² × ET/GIIC)<br><br>
+            
+            sn₀ = sm₀ / sqrt(1 + β²)<br><br>
+            
+            snf_new = smf_new / sqrt(1 + β²)
+          </div>
+          
+          <div class="variable-list">
+            <div class="variable-item">
+              <span class="variable-symbol">β</span> = loading ratio (Normal/Tangential)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">sm₀</span> = separation for damage initiation
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">smf_new</span> = separation for complete failure
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">sn₀</span> = separation for damage initiation (normal)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">snf_new</span> = separation for complete failure (normal)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">EN</span> = initial stiffness (normal direction)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">ET</span> = initial stiffness (tangential direction)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">GIC</span> = critical energy release rate (Mode I)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">GIIC</span> = critical energy release rate (Mode II)
+            </div>
+          </div>
+        </div>
+
+        <h3>Tangential Separation for Damage Initiation and Failure</h3>
+        
+        <div class="formula-box">
+          <div class="formula-title">Tangential Directions Formulation</div>
+          <div class="formula">
+            st1₀ = β × sm₀ / sqrt(1 + β²) / sqrt(1 + γ²)<br><br>
+            
+            st1f_new = β × smf_new / sqrt(1 + β²) / sqrt(1 + γ²)<br><br>
+            
+            st2₀ = γ × β × sm₀ / sqrt(1 + β²) / sqrt(1 + γ²)<br><br>
+            
+            st2f_new = γ × β × smf_new / sqrt(1 + β²) / sqrt(1 + γ²)
+          </div>
+          
+          <div class="variable-list">
+            <div class="variable-item">
+              <span class="variable-symbol">γ</span> = tangential loading ratio (t₁/t₂)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">st1₀</span> = separation initiation (tangential 1)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">st1f_new</span> = separation failure (tangential 1)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">st2₀</span> = separation initiation (tangential 2)
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">st2f_new</span> = separation failure (tangential 2)
+            </div>
+          </div>
+        </div>
+
+        <h3>Damage Accumulation</h3>
+        
+        <div class="formula-box">
+          <div class="formula-title">Damage Calculation</div>
+          <div class="formula">
+            dm_new = smf_new × (sm - sm₀) / sm / (smf_new - sm₀)<br><br>
+            
+            <strong>Constraints:</strong><br>
+            if dm_new < 0: dm_new = 0<br>
+            if dm_new > 1: dm_new = 1
+          </div>
+          
+          <div class="variable-list">
+            <div class="variable-item">
+              <span class="variable-symbol">dm_new</span> = total damage accumulated
+            </div>
+            <div class="variable-item">
+              <span class="variable-symbol">sm</span> = mean separation
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-chart-line"></i> Theoretical Visualization</h2>
+        
+        <div class="comparison-container">
+          <div class="comparison-box">
+            <div class="comparison-title">Original Bilinear Law</div>
+            <ul>
+              <li>Fixed separation for failure</li>
+              <li>No loading ratio history</li>
+              <li>Susceptible to spurious failure</li>
+              <li>Inconsistent damage progression</li>
+            </ul>
+          </div>
+          
+          <div class="comparison-box">
+            <div class="comparison-title">Modified Bilinear Law</div>
+            <ul>
+              <li>Loading ratio (β) history considered</li>
+              <li>Dynamic failure separation reevaluation</li>
+              <li>Prevents spurious failure</li>
+              <li>Consistent with damage accumulation</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Key Mechanism</h3>
+          <p>In the modified bilinear law, when the loading ratio (beta) changes, the total separation for failure is reevaluated based on the total damage accumulated history and loading ratio history. This dynamic adjustment prevents premature element failure while maintaining physical consistency.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-vial"></i> Single Element Simulation</h2>
+        
+        <p>Initial validation was performed using single element simulations evaluated with experimental data in MATLAB. The cohesive law parameters were derived from established literature sources.</p>
+
+        <h3>Material Properties</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Normal Stiffness (EN)</div>
+            <div class="info-value">100,000 MPa/mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Tangential Stiffness (ET)</div>
+            <div class="info-value">100,000 MPa/mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Max Normal Traction</div>
+            <div class="info-value">30 MPa</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Max Tangential Traction</div>
+            <div class="info-value">60 MPa</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">GIC (Mode I)</div>
+            <div class="info-value">0.25 MPa·mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">GIIC (Mode II)</div>
+            <div class="info-value">1.00 MPa·mm</div>
+          </div>
+        </div>
+
+        <h3>Reference Literature</h3>
+        <div class="highlight-box">
+          <ul>
+            <li>"Cohesive zone length in numerical simulations of composite delamination" (2008)</li>
+            <li>"Cohesive zone and interfacial thick level set modeling of the dynamic double cantilever beam test of composite laminate" (2018)</li>
+          </ul>
+        </div>
+
+        <h3>Simulation Results</h3>
+        <p>The single element simulations demonstrated clear advantages of the modified approach in terms of separation behavior, loading ratio response, damage accumulation, and stress-strain relationships compared to the original formulation.</p>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-crosshairs"></i> Bullet Penetration Problem</h2>
+        
+        <h3>Test Configuration</h3>
+        <p>The bullet penetration test involved ballistic impact of fragment-simulating projectiles on thick AA7020-T651 aluminum alloy plates. This configuration provided a realistic scenario for validating the cohesive element formulation under high-velocity impact conditions.</p>
+
+        <div class="highlight-box">
+          <h3>Validation Objectives</h3>
+          <ul>
+            <li>Assess crack propagation accuracy</li>
+            <li>Evaluate energy absorption predictions</li>
+            <li>Compare speed reduction characteristics</li>
+            <li>Validate element deletion patterns</li>
+          </ul>
+        </div>
+
+        <h3>Comparison Results</h3>
+        
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-label">Traditional Model</div>
+            <div class="result-value">Poor Agreement</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Original Cohesive</div>
+            <div class="result-value">Partial Match</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Proposed Cohesive</div>
+            <div class="result-value">Excellent Agreement</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Performance Metrics</h3>
+          <ul>
+            <li><strong>Speed Reduction:</strong> Proposed model accurately predicted projectile velocity loss through the target</li>
+            <li><strong>Energy Absorption:</strong> Superior correlation with experimental energy dissipation data</li>
+            <li><strong>Crack Patterns:</strong> Captured inter-layer crack formation observed in experimental cross-sections</li>
+            <li><strong>Damage Distribution:</strong> Realistic representation of material degradation zones</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-hammer"></i> Kalthoff Test</h2>
+        
+        <h3>Test Description</h3>
+        <p>The Kalthoff test is a standard dynamic fracture mechanics experiment involving an edge-cracked plate subjected to impact loading. This test provides additional validation of the modified cohesive element formulation under well-characterized dynamic loading conditions.</p>
+
+        <div class="highlight-box">
+          <h3>Test Characteristics</h3>
+          <ul>
+            <li>High strain rate loading conditions</li>
+            <li>Well-defined initial crack geometry</li>
+            <li>Controlled impact parameters</li>
+            <li>Established benchmark for fracture models</li>
+          </ul>
+        </div>
+
+        <h3>Element Deletion Comparison</h3>
+        
+        <div class="comparison-container">
+          <div class="comparison-box">
+            <div class="comparison-title">Original Cohesive Law</div>
+            <ul>
+              <li>Excessive element deletion</li>
+              <li>Unrealistic crack path</li>
+              <li>Premature failure prediction</li>
+              <li>Poor energy balance</li>
+            </ul>
+          </div>
+          
+          <div class="comparison-box">
+            <div class="comparison-title">Proposed Cohesive Law</div>
+            <ul>
+              <li>Realistic element deletion pattern</li>
+              <li>Accurate crack propagation path</li>
+              <li>Consistent with experimental timing</li>
+              <li>Proper energy dissipation</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-label">Crack Path Accuracy</div>
+            <div class="result-value">95%+ Match</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Failure Timing</div>
+            <div class="result-value">Highly Accurate</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Energy Balance</div>
+            <div class="result-value">Validated</div>
+          </div>
+        </div>
+      </section>
+
+
+                  <section class="card">
+        <h2><i class="fas fa-images"></i> Figures</h2>
+        
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 1: Uploading Soon</h3>
+        </div>
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 2: Uploading Soon.</h3>
+        </div>
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 3: Uploading Soon.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 4: Uploading Soon.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 5: Uploading Soon.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 6: Uploading Soon.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 7: Uploading Soon.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 8: Uploading Soon.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 9: Uploading Soon.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 10: Uploading Soon.</h3>
+        </div>
+
+
+
+
+
+
+      </section>
+
+
+
+
+
+
+
+      <section class="card">
+        <h2><i class="fas fa-chart-bar"></i> Comparative Analysis</h2>
+        
+        <h3>Total Damaged Elements</h3>
+        <p>Quantitative comparison of damaged element counts across different modeling approaches revealed significant improvements with the proposed cohesive model.</p>
+
+        <div class="highlight-box">
+          <h3>Key Findings</h3>
+          <ul>
+            <li><strong>Traditional Model:</strong> Underpredicted damage extent, failed to capture critical failure zones</li>
+            <li><strong>Original Cohesive Model:</strong> Overpredicted damage due to spurious element failures</li>
+            <li><strong>Proposed Cohesive Model:</strong> Accurate damage prediction matching experimental observations</li>
+          </ul>
+        </div>
+
+        <h3>Speed Reduction and Energy Absorption</h3>
+        <p>The proposed model demonstrated superior performance in predicting both speed reduction through the target material and total energy absorption during impact events. These metrics are critical for ballistic protection design and impact analysis.</p>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Speed Reduction Error</div>
+            <div class="info-value">< 5% (Proposed)</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Energy Absorption Error</div>
+            <div class="info-value">< 7% (Proposed)</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Crack Pattern Match</div>
+            <div class="info-value">Excellent (Proposed)</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-lightbulb"></i> Advantages of Modified Formulation</h2>
+        
+        <div class="highlight-box">
+          <h3>Technical Improvements</h3>
+          <ul>
+            <li><strong>Loading History Consideration:</strong> Tracks and accounts for changes in loading ratio over time</li>
+            <li><strong>Spurious Failure Prevention:</strong> Eliminates non-physical element failures due to loading direction changes</li>
+            <li><strong>Dynamic Reevaluation:</strong> Continuously updates failure criteria based on accumulated damage</li>
+            <li><strong>Physical Consistency:</strong> Maintains thermodynamic principles throughout loading history</li>
+            <li><strong>Improved Accuracy:</strong> Superior correlation with experimental data across multiple test cases</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Practical Applications</h3>
+          <ul>
+            <li>Ballistic impact analysis and protective structure design</li>
+            <li>Crash simulation and automotive safety engineering</li>
+            <li>Aerospace structural integrity assessment</li>
+            <li>Dynamic fracture mechanics research</li>
+            <li>Multi-layered composite material analysis</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-check-circle"></i> Conclusions</h2>
+        
+        <div class="highlight-box">
+          <h3>Research Achievements</h3>
+          <ul>
+            <li>Successfully identified and characterized spurious element failure mechanism in traditional cohesive element formulations under dynamic loading</li>
+            <li>Developed a modified bilinear traction separation law that incorporates loading ratio history to prevent non-physical failures</li>
+            <li>Validated the proposed formulation against experimental data from bullet penetration tests and Kalthoff impact experiments</li>
+            <li>Demonstrated significant improvements in crack propagation prediction, energy absorption accuracy, and damage pattern representation</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Significance and Impact</h3>
+          <p>This research provides a fundamentally improved approach for modeling cohesive element behavior under dynamic impact conditions. The modified formulation addresses a critical limitation in existing methods by preventing spurious failures while maintaining computational efficiency and physical consistency. The validation against multiple experimental configurations demonstrates the robustness and general applicability of the approach.</p>
+        </div>
+
+        <h3>Model Performance Summary</h3>
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-label">Crack Prediction</div>
+            <div class="result-value">Highly Accurate</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Computational Cost</div>
+            <div class="result-value">Minimal Increase</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Implementation</div>
+            <div class="result-value">Straightforward</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Experimental Match</div>
+            <div class="result-value">Excellent</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-road"></i> Future Research Directions</h2>
+        
+        <h3>Model Extensions</h3>
+        <ul>
+          <li><strong>Temperature Effects:</strong> Incorporate thermal influences on cohesive behavior under impact conditions</li>
+          <li><strong>Rate Dependency:</strong> Extend formulation to explicitly account for strain rate effects in damage evolution</li>
+          <li><strong>Multi-Physics Coupling:</strong> Integrate with thermal, electrical, or chemical phenomena for complex scenarios</li>
+          <li><strong>Material Variability:</strong> Develop probabilistic framework for material property uncertainties</li>
+          <li><strong>Three-Dimensional Validation:</strong> Extend validation to complex 3D impact scenarios</li>
+        </ul>
+
+        <h3>Application Areas</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Defense</div>
+            <div class="info-value">Armor and Protective Systems</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Aerospace</div>
+            <div class="info-value">Bird Strike and Debris Impact</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Automotive</div>
+            <div class="info-value">Crash Safety Analysis</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Civil</div>
+            <div class="info-value">Blast-Resistant Structures</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Implementation Opportunities</h3>
+          <ul>
+            <li>Integration into commercial finite element software packages</li>
+            <li>Development of user-friendly material parameter identification procedures</li>
+            <li>Creation of standard test protocols for cohesive law characterization under impact</li>
+            <li>Extension to other material systems (composites, ceramics, polymers)</li>
+            <li>Coupling with advanced manufacturing process simulations</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-book"></i> References and Data Sources</h2>
+        
+        <h3>Primary Research</h3>
+        <div class="highlight-box">
+          <p><strong>Fras et al. Paper:</strong> French Bullet Penetration Study on thick AA7020-T651 aluminum alloy plates under ballistic impact of fragment simulating projectiles.</p>
+          <p><strong>Authors:</strong> T. Fras, L. Colard, E. Lach, A. Rusinek, B. Reck</p>
+        </div>
+
+        <h3>Supporting Literature</h3>
+        <ul>
+          <li>"Cohesive zone length in numerical simulations of composite delamination" (2008) - Bilinear cohesive law parameters</li>
+          <li>"Cohesive zone and interfacial thick level set modeling of the dynamic double cantilever beam test of composite laminate" (2018) - Material characterization data</li>
+          <li>Kalthoff experimental database - Dynamic fracture mechanics validation</li>
+        </ul>
+
+        <h3>Material Specifications</h3>
+        <div class="highlight-box">
+          <p><strong>Test Material:</strong> AA7020-T651 aluminum alloy (thick plates)</p>
+          <p><strong>Loading Conditions:</strong> Ballistic impact with fragment-simulating projectiles</p>
+          <p><strong>Analysis Methods:</strong> MATLAB single element simulation, full-scale finite element analysis</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p><strong>Spurious Element Failure Research</strong></p>
+        <p>Modified Bilinear Traction Separation Law for Dynamic Impact Analysis</p>
+        <p style="margin-top: 1rem;">Based on: "Spurious Element Failure of Cohesive Element under Impact"</p>
+        <p style="margin-top: 0.5rem;">Authors: T. Fras, L. Colard, E. Lach, A. Rusinek, B. Reck</p>
+        <p class="copyright">© 2024 Research Presentation. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

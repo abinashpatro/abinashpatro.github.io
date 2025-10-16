@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bilinear Traction-Separation Law | Fatigue Analysis</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #B84E00;
+      --primary-dark: #8A3A00;
+      --orange-medium: #E86100;
+      --orange-light: #FF7A1F;
+      --accent: #E86100;
+      --accent-light: #FF9447;
+      --dark: #4D2200;
+      --light: #FFF4ED;
+      --gray: #6B4A3D;
+      --border: #FFCBA8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: linear-gradient(to bottom, #FFF4ED 0%, #FFE8D6 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--orange-medium) 50%, var(--orange-light) 100%);
+      color: white;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(232, 97, 0, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.75rem;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .authors {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      opacity: 0.85;
+    }
+
+    .institution {
+      font-size: 0.95rem;
+      opacity: 0.75;
+    }
+
+    .publication-info {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    main {
+      padding: 4rem 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(184, 78, 0, 0.15);
+      border-color: var(--accent);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--accent);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      font-size: 1.75rem;
+    }
+
+    h2 i {
+      margin-right: 12px;
+      color: var(--accent);
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      color: var(--primary);
+      margin: 1.5rem 0 1rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+
+    .abstract-content {
+      background: linear-gradient(135deg, #FFF4ED 0%, #FFE8D6 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-item {
+      padding: 1.75rem;
+      background: linear-gradient(135deg, #FFF9E6 0%, #FFF3CC 100%);
+      border-radius: 16px;
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      transform: translateX(5px);
+      border-left-width: 6px;
+      background: linear-gradient(135deg, #FFE8D6 0%, #FFCBA8 100%);
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 1rem 0;
+    }
+
+    li {
+      margin-bottom: 1rem;
+      padding-left: 2.5rem;
+      position: relative;
+      text-align: justify;
+    }
+
+    li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.875rem;
+    }
+
+    .methodology-steps {
+      counter-reset: step-counter;
+    }
+
+    .methodology-steps li:before {
+      content: counter(step-counter);
+      counter-increment: step-counter;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--orange-medium) 100%);
+      font-size: 0.75rem;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #FFF3CC 0%, #FFE680 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+      margin: 2rem 0;
+    }
+
+    .highlight-box h3 {
+      margin-top: 0;
+    }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .model-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .model-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(184, 78, 0, 0.1);
+    }
+
+    .model-number {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .model-title {
+      font-size: 1.1rem;
+      color: var(--dark);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .model-description {
+      font-size: 0.9rem;
+      color: var(--gray);
+      text-align: left;
+    }
+
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .keyword-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--orange-medium) 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(184, 78, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .keyword-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(184, 78, 0, 0.4);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      background: white;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: linear-gradient(135deg, #FFF3CC 0%, #FFE680 100%);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    code {
+      background: linear-gradient(135deg, #FFF3CC 0%, #FFE680 100%);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      color: var(--primary);
+    }
+
+    .equation {
+      background: #FFF4ED;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+      margin: 1.5rem 0;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--amber-medium) 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .info-grid, .model-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 2rem;
+      }
+    }
+
+    .figure-container {
+  position: relative;
+  width: 50%; /* even smaller */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f8f8f8;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.figure-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1>A Novel Bilinear Traction-Separation Law for Fatigue Damage Accumulation</h1>
+        <p class="subtitle">Adhesive Joints in Fiber-Reinforced Composite Materials Under Step/Variable-Amplitude Loading</p>
+        <p class="authors"><strong>Abinash Patro</strong> and <strong>Ala Tabiei</strong></p>
+        <p class="institution">Department of Mechanical and Materials Engineering<br>College of Engineering and Applied Science, University of Cincinnati<br>2901 Woodside Drive, Cincinnati, OH 45221, USA</p>
+        <p class="publication-info">Published in <em>Journal of Composites Science</em>, 2025<br>DOI: 10.3390/jcs9030112</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card">
+        <h2><i class="fas fa-scroll"></i> Abstract</h2>
+        <div class="abstract-content">
+          <p>Adhesive joints in real-world conditions often experience variable or step loading rather than constant-amplitude fatigue. This study addresses this gap by examining the influence of load sequence and block loading on fatigue damage in adhesive joints of fiber-reinforced polymer (FRP) composites.</p>
+          
+          <p>A novel bilinear traction-separation law based on the Fatigue Crack Growth Rate (FCGR) rule is introduced to predict fatigue failure under step/variable loads, accounting for load history, sequence, and interaction effects. This model was validated using a double-lap joint model under step/variable loading across four experimental scenarios.</p>
+          
+          <p>The proposed model outperformed existing fatigue damage-accumulation models, significantly reducing the Relative Error of Prediction (REP). Notably, the proposed model achieved reductions from 81.10% to as low as 0.013% in certain cases. The proposed bilinear law exhibited an accelerated damage accumulation rate per cycle for low-to-high loading situations and a decelerated rate for high-to-low loading scenarios, aligning more closely with experimental observations.</p>
+          
+          <p>The proposed model offers practical benefits by improving fatigue life predictions, enabling optimized FRP composite designs, and minimizing overengineering. These advancements are particularly relevant in industries such as aerospace, automotive, and wind energy, where structural durability and safety are paramount.</p>
+        </div>
+
+        <div class="keywords">
+          <span class="keyword-badge">Fatigue Failure</span>
+          <span class="keyword-badge">Variable Fatigue Loading</span>
+          <span class="keyword-badge">Bilinear Traction Separation Law</span>
+          <span class="keyword-badge">Fatigue Crack Growth Rate</span>
+          <span class="keyword-badge">Adhesive Joints</span>
+          <span class="keyword-badge">Composite Material</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-question-circle"></i> The Challenge of Variable Loading</h2>
+        
+        <p>In real-world scenarios, adhesive joints experience complex loading patterns that vary over time, including changes in load magnitude, frequency, and duration. These variable or step-loading patterns represent actual service conditions more accurately than the constant-amplitude loading typically used in laboratory fatigue tests.</p>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Constant Loading Tests</div>
+            <div class="info-value">Simplified but Limited</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Variable Loading</div>
+            <div class="info-value">Complex but Realistic</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">The Problem</div>
+            <div class="info-value">Prediction Accuracy</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Limitations of Traditional Approaches</h3>
+          <p>Although constant-amplitude fatigue testing is simpler and more economical, it fails to fully capture the intricacies of real-world loading conditions. This discrepancy occurs because constant-amplitude tests do not consider:</p>
+          <ul>
+            <li>The effects of load interactions and sequences, which can significantly affect fatigue life</li>
+            <li>Load history that influences subsequent damage accumulation</li>
+            <li>Stress cycles of varying amplitude that occur in actual service conditions</li>
+            <li>The nonlinear nature of damage accumulation under variable loading</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-exclamation-triangle"></i> Problems with Miner's Rule</h2>
+        
+        <p>The Palmgren-Miner rule, introduced in 1945, represents one of the earliest mathematical approaches to cumulative fatigue damage. Despite its widespread use, experimental results under variable or block loading conditions show considerable differences from Miner's rule predictions.</p>
+
+        <div class="equation">D = Σ(n<sub>i</sub>/N<sub>i</sub>)</div>
+        <p style="text-align: center;">Where D is total damage, n<sub>i</sub> is cycles at ith load level, N<sub>i</sub> is cycles to failure at ith load level</p>
+
+        <h3>Key Deficiencies of Miner's Rule</h3>
+        <ul>
+          <li><strong>No Load History:</strong> Fails to consider the sequence and history of applied loads</li>
+          <li><strong>No Loading Sequence:</strong> Treats all loading sequences as equivalent</li>
+          <li><strong>No Load Interaction:</strong> Ignores interactions between different load levels</li>
+        </ul>
+
+        <div class="highlight-box">
+          <h3>Observed Behavior in Experiments</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Low-to-High Loading (σ₁ < σ₂)</div>
+              <div class="info-value">Conservative Predictions</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">High-to-Low Loading (σ₁ > σ₂)</div>
+              <div class="info-value">Non-Conservative Results</div>
+            </div>
+          </div>
+          <p style="margin-top: 1rem;">For loading sequences from low to high stress, Miner's rule generally produces conservative estimates of fatigue life. However, for sequences from high to low stress, results tend to be non-conservative, potentially unsafe.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-layer-group"></i> Existing Damage Accumulation Models</h2>
+        
+        <p>To address the limitations of Miner's rule, researchers have developed various theories regarding nonlinear damage accumulation. These models can be classified into seven categories:</p>
+
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-number">1</div>
+            <div class="model-title">Linear Damage Rules</div>
+            <p class="model-description">Palmgren-Miner and similar linear accumulation approaches that assume damage adds linearly.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-number">2</div>
+            <div class="model-title">Nonlinear Damage Curve Models</div>
+            <p class="model-description">Two-stage linearization models including Marco-Starkey and Manson-Halford approaches.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-number">3</div>
+            <div class="model-title">Life Curve Modification Models</div>
+            <p class="model-description">Kwofie, Aeran, and Subramanyan models that modify the S-N curve based on loading conditions.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-number">4</div>
+            <div class="model-title">Crack Growth Concept Models</div>
+            <p class="model-description">Wheeler, Willenborg, and Elber models based on crack closure and plastic zone interactions.</p>
+          </div>
+
+          <div class="model-card">
+            <div class="model-number">5</div>
+            <div class="model-title">Continuum Damage Mechanics</div>
+            <p class="model-description">Chaboche and Dattoma models based on continuum mechanics principles for damage evolution.</p>
+          </div>
+
+          <div class="model-card">
+            <div class="model-number">6</div>
+            <div class="model-title">Material Degradation Models</div>
+            <p class="model-description">Models considering elastic modulus degradation and material memory effects during fatigue.</p>
+          </div>
+
+          <div class="model-card">
+            <div class="model-number">7</div>
+            <div class="model-title">Energy-Based Models</div>
+            <p class="model-description">Feltner-Morrow and hysteresis energy approaches using plastic strain energy as failure criterion.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Persistent Limitations</h3>
+          <p>Despite the variety of approaches, these theories still overlook one or more critical factors: load history, loading sequence effects, and load interaction mechanisms. This study introduces a novel approach that addresses all three factors simultaneously.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-cube"></i> Bilinear Traction-Separation Law</h2>
+        
+        <h3>Cohesive Zone Model Fundamentals</h3>
+        <p>The cohesive zone model, inspired by the short-crack regime and Paris Law, was introduced by Dugdale and Barenblatt to simulate crack initiation and growth in ductile materials. The bilinear traction-separation law provides a framework for relating fatigue crack growth to damage accumulation.</p>
+
+        <div class="highlight-box">
+          <h3>Damage Accumulation Modes</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Mode I</div>
+              <div class="info-value">Normal Separation</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Mode II</div>
+              <div class="info-value">Tangential Separation</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Mixed Mode</div>
+              <div class="info-value">Combined Loading</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Original Formulation</h3>
+        <p>The fatigue damage can be characterized using the traction-separation law for different modes:</p>
+
+        <div class="equation">∂d<sub>f</sub>/∂N = (b/A<sub>cz,I</sub>)(da/dN) = (32T²)/(9πEG<sub>IC</sub>)(da/dN)</div>
+        <p style="text-align: center;"><strong>Mode I:</strong> Normal direction damage accumulation</p>
+
+        <div class="equation">∂d<sub>f</sub>/∂N = (b/A<sub>cz,II</sub>)(da/dN) = (S²)/(EG<sub>IIC</sub>)(da/dN)</div>
+        <p style="text-align: center;"><strong>Mode II:</strong> Tangential direction damage accumulation</p>
+
+        <h3>Paris Law Integration</h3>
+        <p>Fatigue Crack Growth Rate (FCGR) is correlated with the Bilinear Traction-Separation Law through the Paris Law regime:</p>
+
+        <div class="equation">da/dN = C(ΔG)<sup>m</sup></div>
+        <p style="text-align: center;">Where C and m are experimentally obtained Paris Law parameters</p>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-lightbulb"></i> The Novel Proposed Model</h2>
+        
+        <p>The proposed model introduces an improvised Paris Law that incorporates a new nonlinear load-interaction parameter to the crack propagation rate equation. This addresses the limitations of previous models by accounting for load history, sequence, and interactions.</p>
+
+        <div class="highlight-box">
+          <h3>Key Innovation: Load Interaction Parameter</h3>
+          <div class="equation">da/dN = C(ΔG<sub>i</sub>)<sup>m</sup> × (L<sub>i</sub>)<sup>v<sub>i</sub></sup></div>
+          <p>Where L<sub>i</sub> is the load-interaction parameter at the ith level load cycle, and v<sub>i</sub> is the exponent parameter considering loading history.</p>
+        </div>
+
+        <h3>Load-Interaction Parameter Definition</h3>
+        <p>For different loading modes, the load-interaction parameter at ith level load cycle is defined as:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Mode</th>
+              <th>Load Interaction Parameter</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mode I</td>
+              <td>L<sub>I,i</sub> = T<sub>i</sub>/T<sub>i-1</sub></td>
+              <td>Normal traction ratio</td>
+            </tr>
+            <tr>
+              <td>Mode II</td>
+              <td>L<sub>II,i</sub> = S<sub>i</sub>/S<sub>i-1</sub></td>
+              <td>Shear stress ratio</td>
+            </tr>
+            <tr>
+              <td>Mixed Mode</td>
+              <td>L<sub>i</sub> = T<sub>mi</sub>/T<sub>mi-1</sub></td>
+              <td>Combined traction ratio</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Loading History Exponent</h3>
+        <p>The exponent v<sub>i</sub> considers loading history and is linked to material degradation during fatigue failure:</p>
+
+        <div class="equation">v<sub>i</sub> = (logN<sub>i</sub>/logN<sub>i-1</sub>) × (σ<sub>i-1</sub>/σ<sub>i</sub>)</div>
+        <p style="text-align: center;">Based on Corten-Dolan and Morrow's material degradation concepts</p>
+
+        <div class="highlight-box">
+          <h3>Physical Interpretation</h3>
+          <p>This parameter accounts for:</p>
+          <ul>
+            <li>Decrease in elastic modulus during fatigue-induced failure</li>
+            <li>Reduction in yield strength as cracks grow under repeated stress cycles</li>
+            <li>Material degradation from declining mobile dislocations</li>
+            <li>Emergence of barriers to dislocation movements</li>
+            <li>Weakening of material toughness throughout the fatigue process</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-calculator"></i> Mathematical Formulation</h2>
+        
+        <h3>Enhanced Crack Propagation Equations</h3>
+        <p>The new crack propagation equations for each mode incorporating the load-interaction parameter:</p>
+
+        <div class="equation">
+          <strong>Mode I:</strong><br>
+          (da/dN)<sub>I</sub> = C[E∆n²/2(1-R²)(1-d<sub>s</sub>)(1-d<sub>f</sub>)]<sup>m</sup> × (T<sub>i</sub>/T<sub>i-1</sub>)<sup>[logN<sub>i</sub>/logN<sub>i-1</sub> × σ<sub>i-1</sub>/σ<sub>i</sub>]</sup>
+        </div>
+
+        <div class="equation">
+          <strong>Mode II:</strong><br>
+          (da/dN)<sub>II</sub> = C[E∆t²/2(1-R²)(1-d<sub>s</sub>)(1-d<sub>f</sub>)]<sup>m</sup> × (S<sub>i</sub>/S<sub>i-1</sub>)<sup>[logN<sub>i</sub>/logN<sub>i-1</sub> × σ<sub>i-1</sub>/σ<sub>i</sub>]</sup>
+        </div>
+
+        <div class="equation">
+          <strong>Mixed Mode:</strong><br>
+          (da/dN)<sub>mm</sub> = C[∆G<sub>I</sub> + β(∆G<sub>II</sub> - ∆G<sub>I</sub>)]<sup>m</sup> × (T<sub>mi</sub>/T<sub>mi-1</sub>)<sup>[logN<sub>i</sub>/logN<sub>i-1</sub> × σ<sub>i-1</sub>/σ<sub>i</sub>]</sup>
+        </div>
+
+        <h3>Behavior Under Different Loading Sequences</h3>
+        
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-arrow-up"></i> Low-to-High Loading</div>
+            <p class="model-description">When σ₁ < σ₂ and N₁ > N₂, crack propagation is slower, resulting in MORE cycles to failure than the previous model. Damage accumulates at an accelerated rate per cycle.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-arrow-down"></i> High-to-Low Loading</div>
+            <p class="model-description">When σ₁ > σ₂ and N₁ < N₂, crack propagates more rapidly, requiring FEWER cycles for fatigue failure than the previous model. Damage accumulates at a decelerated rate per cycle.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Experimental Validation</h3>
+          <p>Empirical evidence from various loading conditions revealed that:</p>
+          <ul>
+            <li>In low-to-high loading sequences, cumulative damage D exceeded 1.0</li>
+            <li>In high-to-low loading sequences, cumulative damage D was less than 1.0</li>
+            <li>These trends align with real-world observations and experimental data</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-vial"></i> Experimental Setup</h2>
+        
+        <h3>Double-Lap Joint Specimen</h3>
+        <p>A double-lap joint model was used to assess the suitability of the proposed bilinear traction-separation law. Experimental research by Khabbaz et al. determined the fatigue lifespan of adhesively bonded FRP structural joints under both steady and fluctuating load conditions.</p>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Total Length</div>
+            <div class="info-value">350 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">GFRP Tab Length</div>
+            <div class="info-value">200 mm each</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Adhesive Bond Length</div>
+            <div class="info-value">50 mm</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Adhesive Thickness</div>
+            <div class="info-value">2 mm</div>
+          </div>
+        </div>
+
+        <h3>Materials Used</h3>
+        
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title">GFRP Laminates</div>
+            <p class="model-description"><strong>Supplier:</strong> Fiberline A/S (Denmark)<br>
+            <strong>Material:</strong> E-glass fibers with isophthalic polyester resin<br>
+            <strong>Young's Modulus:</strong> 25 GPa<br>
+            <strong>Tensile Strength:</strong> 307.5 MPa<br>
+            <strong>Density:</strong> 2560 kg/m³</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">SikaDur 330 Adhesive</div>
+            <p class="model-description"><strong>Supplier:</strong> Sika AG (Switzerland)<br>
+            <strong>Type:</strong> Two-component epoxy<br>
+            <strong>Tensile Strength:</strong> 33.8 MPa<br>
+            <strong>Flexural Strength:</strong> 60.6 MPa<br>
+            <strong>Modulus:</strong> 3489 MPa</p>
+          </div>
+        </div>
+
+        <h3>Paris Law Parameters for SikaDur 330</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>C<sub>I</sub></td>
+              <td>1</td>
+              <td>Mode I Paris Law constant</td>
+            </tr>
+            <tr>
+              <td>C<sub>II</sub></td>
+              <td>5</td>
+              <td>Mode II Paris Law constant</td>
+            </tr>
+            <tr>
+              <td>m<sub>I</sub></td>
+              <td>150</td>
+              <td>Mode I Paris Law exponent</td>
+            </tr>
+            <tr>
+              <td>m<sub>II</sub></td>
+              <td>8.1</td>
+              <td>Mode II Paris Law exponent</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Test Conditions</h3>
+        <ul>
+          <li><strong>Frequency:</strong> 10 Hz constant loading frequency</li>
+          <li><strong>Load Ratio (R):</strong> 0.1 (maintained throughout all tests)</li>
+          <li><strong>Equipment:</strong> INSTRON 8800 servohydraulic device</li>
+          <li><strong>Environment:</strong> 23 ± 5°C, 50 ± 10% relative humidity</li>
+          <li><strong>Monitoring:</strong> HBM RDS20 crack gauges for crack initiation and growth</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-clipboard-list"></i> Test Cases</h2>
+        
+        <p>Four different two-block loading experiments were conducted in this study, consisting of two low-to-high loading cases and two high-to-low loading cases.</p>
+
+        <h3>Experimental Test Matrix</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>F<sub>max1</sub> (kN)</th>
+              <th>n₁ Cycles</th>
+              <th>F<sub>max2</sub> (kN)</th>
+              <th>n₂ Cycles</th>
+              <th>Total N<sub>f</sub></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: #FFF4ED;">
+              <td><strong>Case 1 (L→H)</strong></td>
+              <td>14.4</td>
+              <td>48,649</td>
+              <td>21.6</td>
+              <td>483</td>
+              <td>49,132</td>
+            </tr>
+            <tr style="background: #FFF4ED;">
+              <td><strong>Case 2 (L→H)</strong></td>
+              <td>12.0</td>
+              <td>456,038</td>
+              <td>19.2</td>
+              <td>2,592</td>
+              <td>458,630</td>
+            </tr>
+            <tr style="background: #FFE8D6;">
+              <td><strong>Case 3 (H→L)</strong></td>
+              <td>21.6</td>
+              <td>287</td>
+              <td>14.4</td>
+              <td>207,559</td>
+              <td>207,846</td>
+            </tr>
+            <tr style="background: #FFE8D6;">
+              <td><strong>Case 4 (H→L)</strong></td>
+              <td>19.2</td>
+              <td>1,330</td>
+              <td>12.0</td>
+              <td>4,832,688</td>
+              <td>4,834,018</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="highlight-box">
+          <h3>Case Terminology</h3>
+          <div class="model-grid">
+            <div class="model-card">
+              <div class="model-number">Case 1</div>
+              <div class="model-title">14.4 kN → 21.6 kN</div>
+              <p class="model-description">Low-to-high loading transition</p>
+            </div>
+            <div class="model-card">
+              <div class="model-number">Case 2</div>
+              <div class="model-title">12.0 kN → 19.2 kN</div>
+              <p class="model-description">Low-to-high loading transition</p>
+            </div>
+            <div class="model-card">
+              <div class="model-number">Case 3</div>
+              <div class="model-title">21.6 kN → 14.4 kN</div>
+              <p class="model-description">High-to-low loading transition</p>
+            </div>
+            <div class="model-card">
+              <div class="model-number">Case 4</div>
+              <div class="model-title">19.2 kN → 12.0 kN</div>
+              <p class="model-description">High-to-low loading transition</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+            <section class="card">
+        <h2><i class="fas fa-images"></i> Figures</h2>
+        
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/Image1a.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 1: Typical Low-to-High and High-to-Low Loading cycles and the theoretical damage accumulation example.</h3>
+        </div>
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/Image1b.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 2: Figures c and d show the theoretical nonlinear characteristics of the damage accumulation based on the type of load transition.</h3>
+        </div>
+
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/Image4.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 3: Cohesive Zone Model.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image5.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 4: Original Bilinear Traction-Separation Model.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image8.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 5: Specification of Double Lap Joint used in the study.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image16.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 6: Comparison of Experimental Data and Simulation for constant load fatigue test.</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image17.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 7: Comparison of fatigue failure of step loading cases between Experimental Data, Original
+Bilinear Traction Separation Law, and Proposed Bilinear Traction Separation Law. Low to High
+Load Transition Cases: 14400 N to 21600 (Case 1).</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image18.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 8: Comparison of fatigue failure of step loading cases between Experimental Data, Original
+Bilinear Traction Separation Law, and Proposed Bilinear Traction Separation Law. Low to High
+Load Transition Cases: 12000 N to 19200 N (Case 2).</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image19.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 9: Comparison of fatigue failure of step loading cases between Experimental Data, Original
+Bilinear Traction Separation Law, and Proposed Bilinear Traction Separation Law. High-to-low 
+Load Transition Cases: 21600 N to 14400 N (Case 3).</h3>
+        </div>
+
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image20.jpg"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 10: Comparison of fatigue failure of step loading cases between Experimental Data, Original
+Bilinear Traction Separation Law, and Proposed Bilinear Traction Separation Law. High-to-low 
+Load Transition Cases: 19200 N to 12000 N (Case 4).</h3>
+        </div>
+
+
+                <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image14.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 11: Comparison of damage accumulation rate per cycle after load transition or load level 2
+between original bilinear traction separation law and proposed traction separation law. Low to high loading case 2.</h3>
+        </div>
+
+
+
+        <div class="highlight-box">
+          <div class="figure-container">
+            <img
+              src="./research4/image15.png"
+              alt="Tensile Test Specimen"
+              class="figure-img"
+            />
+          </div>
+          <h3>Figure 12: Comparison of damage accumulation rate per cycle after load transition or load level 2
+between original bilinear traction separation law and proposed traction separation law. High to Low loading case 4.</h3>
+        </div>
+
+
+
+      </section>
+
+
+
+
+
+      <section class="card">
+        <h2><i class="fas fa-chart-line"></i> Results & Performance</h2>
+        
+        <h3>Relative Error of Prediction (REP)</h3>
+        <p>To quantify model accuracy, the Relative Error of Prediction was calculated as:</p>
+
+        <div class="equation">REP = [(N<sub>exp</sub> - N<sub>sim</sub>)/N<sub>exp</sub>] × 100</div>
+
+        <h3>Proposed Model Performance</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>Experimental N<sub>f</sub></th>
+              <th>Proposed Model N<sub>f</sub></th>
+              <th>Original Model N<sub>f</sub></th>
+              <th>Proposed REP</th>
+              <th>Original REP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Case 1</strong></td>
+              <td>49,132</td>
+              <td>49,124</td>
+              <td>51,400</td>
+              <td style="color: #2e7d32; font-weight: bold;">-0.016%</td>
+              <td style="color: #c62828;">4.616%</td>
+            </tr>
+            <tr>
+              <td><strong>Case 2</strong></td>
+              <td>458,630</td>
+              <td>458,570</td>
+              <td>300,000</td>
+              <td style="color: #2e7d32; font-weight: bold;">-0.013%</td>
+              <td style="color: #c62828;">-34.588%</td>
+            </tr>
+            <tr>
+              <td><strong>Case 3</strong></td>
+              <td>207,846</td>
+              <td>238,400</td>
+              <td>107,180</td>
+              <td style="color: #2e7d32; font-weight: bold;">14.700%</td>
+              <td style="color: #c62828;">-48.433%</td>
+            </tr>
+            <tr>
+              <td><strong>Case 4</strong></td>
+              <td>4,834,018</td>
+              <td>4,432,170</td>
+              <td>913,610</td>
+              <td style="color: #2e7d32; font-weight: bold;">-8.313%</td>
+              <td style="color: #c62828;">-81.100%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="highlight-box">
+          <h3>Key Improvements</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Case 1 Improvement</div>
+              <div class="info-value">4.62% → 0.016%</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Case 2 Improvement</div>
+              <div class="info-value">34.59% → 0.013%</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Case 3 Improvement</div>
+              <div class="info-value">48.43% → 14.70%</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Case 4 Improvement</div>
+              <div class="info-value">81.10% → 8.31%</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Damage Accumulation Rate Behavior</h3>
+        <p>The proposed bilinear traction-separation law exhibits different rates of damage accumulation per cycle compared to the original model:</p>
+
+        <ul>
+          <li><strong>Low-to-High Loading (Cases 1 & 2):</strong> Damage accumulated at a faster rate per cycle, leading to earlier failure predictions that closely matched experimental results</li>
+          <li><strong>High-to-Low Loading (Cases 3 & 4):</strong> Damage accumulation rate per cycle was reduced, resulting in delayed failure predictions consistent with experimental observations</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-balance-scale"></i> Comparison with Existing Models</h2>
+        
+        <p>The proposed model was compared against eight conventional fatigue damage-accumulation models to validate its efficacy under varying amplitude fatigue-loading conditions.</p>
+
+        <h3>Complete Comparison Table</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Case 1 REP</th>
+              <th>Case 2 REP</th>
+              <th>Case 3 REP</th>
+              <th>Case 4 REP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: #FFCBA8; font-weight: bold;">
+              <td>Proposed S-N Law</td>
+              <td style="color: #2e7d32;">-0.016%</td>
+              <td style="color: #2e7d32;">-0.013%</td>
+              <td style="color: #2e7d32;">14.700%</td>
+              <td style="color: #2e7d32;">-8.313%</td>
+            </tr>
+            <tr>
+              <td>Original S-N Model</td>
+              <td>4.616%</td>
+              <td>-34.588%</td>
+              <td>-48.433%</td>
+              <td>-81.100%</td>
+            </tr>
+            <tr>
+              <td>Miner</td>
+              <td>0.454%</td>
+              <td>0.060%</td>
+              <td>-49.523%</td>
+              <td>-81.262%</td>
+            </tr>
+            <tr>
+              <td>Corten-Dolan</td>
+              <td>-0.344%</td>
+              <td>-0.321%</td>
+              <td>13.546%</td>
+              <td>-52.059%</td>
+            </tr>
+            <tr>
+              <td>Fruedenthal Heller</td>
+              <td>0.867%</td>
+              <td>0.268%</td>
+              <td>-72.443%</td>
+              <td>-93.753%</td>
+            </tr>
+            <tr>
+              <td>Damage Curve Approach</td>
+              <td>0.782%</td>
+              <td>0.202%</td>
+              <td>-38.420%</td>
+              <td>-77.044%</td>
+            </tr>
+            <tr>
+              <td>Kwofie</td>
+              <td>-0.138%</td>
+              <td>-0.192%</td>
+              <td>-14.088%</td>
+              <td>-68.608%</td>
+            </tr>
+            <tr>
+              <td>Subramanyan</td>
+              <td>-0.981%</td>
+              <td>-0.565%</td>
+              <td>-31.210%</td>
+              <td>-73.273%</td>
+            </tr>
+            <tr>
+              <td>Dattoma</td>
+              <td>-0.981%</td>
+              <td>-0.565%</td>
+              <td>-31.210%</td>
+              <td>-73.273%</td>
+            </tr>
+            <tr>
+              <td>Xie</td>
+              <td>-0.232%</td>
+              <td>-0.254%</td>
+              <td>-33.442%</td>
+              <td>-74.302%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="highlight-box">
+          <h3>Performance Summary</h3>
+          <p><strong>Low-to-High Loading Cases (1 & 2):</strong></p>
+          <ul>
+            <li>Kwofie's model showed best results among conventional models (≈0.15% REP)</li>
+            <li>Proposed model reduced REP by additional 0.014% below Kwofie</li>
+            <li>Achieved near-perfect predictions with REP below 0.02%</li>
+          </ul>
+          
+          <p><strong>High-to-Low Loading Cases (3 & 4):</strong></p>
+          <ul>
+            <li>Corten-Dolan model showed lowest REP among conventional models</li>
+            <li>Proposed model significantly outperformed all conventional approaches</li>
+            <li>Reduced REP from 52-93% range to 8-15% range</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-clock"></i> Computational Efficiency</h2>
+        
+        <h3>Simulation Time Comparison</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>Proposed Model</th>
+              <th>Original Model</th>
+              <th>Time Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Case 1</strong></td>
+              <td>20 min 28 sec</td>
+              <td>17 min 56 sec</td>
+              <td>+2 min 32 sec</td>
+            </tr>
+            <tr>
+              <td><strong>Case 2</strong></td>
+              <td>1 hr 0 min 6 sec</td>
+              <td>1 hr 11 min 56 sec</td>
+              <td>-11 min 50 sec</td>
+            </tr>
+            <tr>
+              <td><strong>Case 3</strong></td>
+              <td>23 min 40 sec</td>
+              <td>28 min 11 sec</td>
+              <td>-4 min 31 sec</td>
+            </tr>
+            <tr>
+              <td><strong>Case 4</strong></td>
+              <td>10 hr 1 min 2 sec</td>
+              <td>14 hr 38 min 53 sec</td>
+              <td>-4 hr 37 min 51 sec</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="highlight-box">
+          <h3>Efficiency Analysis</h3>
+          <ul>
+            <li><strong>Low-to-High Cases:</strong> Minimal time differences due to relatively small number of post-transition cycles</li>
+            <li><strong>High-to-Low Cases:</strong> Significant time savings because original model predicts earlier failure than experimentally observed</li>
+            <li><strong>Case 4 Notable:</strong> Original model terminates simulation prematurely, while proposed model accurately simulates full fatigue life</li>
+            <li>Additional internal computations in proposed model are offset by more accurate failure predictions</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-cogs"></i> Implementation Details</h2>
+        
+        <h3>Implicit Time Integration</h3>
+        <p>From a computational standpoint, calculating total fatigue damage cycle-by-cycle for high cycle fatigue (up to ~10⁸ cycles) is extremely expensive. A cyclical jumping technique was utilized:</p>
+
+        <div class="equation">d<sub>f,n+m</sub> = d<sub>f,n</sub> + j(∂d<sub>f</sub>/∂N)</div>
+        <p style="text-align: center;">Where j is the number of cycles in which damage rate is assumed constant</p>
+
+        <p>When the cyclic load period ΔT remains constant throughout simulation:</p>
+
+        <div class="equation">d<sub>f,i+1</sub> = d<sub>f,i</sub> + (dt<sub>i</sub>/ΔT)(∂d<sub>f</sub>/∂N)</div>
+        <p style="text-align: center;">Where i denotes the number of time intervals</p>
+
+        <h3>Convergence Enhancement</h3>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-bezier-curve"></i> Arc-Length Method</div>
+            <p class="model-description">Addresses convergence difficulties at turning points in the material model using LS-DYNA's integrated algorithms.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-water"></i> Viscous Regularization</div>
+            <p class="model-description">Introduces viscous damage variable (η = 10⁻⁴) to improve convergence while keeping viscous energy negligible.</p>
+          </div>
+        </div>
+
+        <div class="equation">d<sub>v</sub> = d<sub>s</sub> - η(λ̇/λ)</div>
+        <p style="text-align: center;">Viscous damage replaces static damage to enhance stability</p>
+
+        <h3>LS-DYNA Implementation</h3>
+        <p>An LS-DYNA user material (UMAT) model was created to forecast fatigue failure in adhesive joints within composite materials subjected to varying loads. This model incorporates:</p>
+        <ul>
+          <li>Bilinear traction-separation law with FCGR</li>
+          <li>Load-interaction parameters for all three modes</li>
+          <li>Loading history exponent calculation</li>
+          <li>Implicit time integration with cyclic jumping</li>
+          <li>Viscous regularization for convergence (UMAT41c)</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-microscope"></i> Physical Mechanisms</h2>
+        
+        <h3>Why Low-to-High Loading Accumulates Damage Faster</h3>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title">Microcrack Initiation</div>
+            <p class="model-description">Low stress cycles initiate microscopic cracks that enlarge rapidly under subsequent high stress, causing faster deterioration than constant high stress.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Surface Degradation</div>
+            <p class="model-description">Repeated plastic deformation creates surface deterioration, establishing new crack-initiation points that form under fewer cycles at higher stress.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Nonlinear Accumulation</div>
+            <p class="model-description">Damage accumulation is not a straightforward linear progression—early damage accelerates subsequent damage at higher loads.</p>
+          </div>
+        </div>
+
+        <h3>Why High-to-Low Loading Decelerates Damage</h3>
+        <div class="highlight-box">
+          <p>Based on Wheeler's crack growth model, the interaction between plastic zones at the crack tip created by residual compressive stresses due to overloading affects subsequent crack growth:</p>
+          <ul>
+            <li>High initial loads create large plastic zones at crack tips</li>
+            <li>These zones induce residual compressive stresses</li>
+            <li>Subsequent lower loads must overcome these compressive stresses</li>
+            <li>Crack growth is retarded, extending fatigue life beyond linear predictions</li>
+          </ul>
+        </div>
+
+        <h3>Material Degradation Considerations</h3>
+        <p>The loading history exponent v<sub>i</sub> accounts for:</p>
+        <ul>
+          <li>Decrease in elastic modulus during fatigue failure</li>
+          <li>Reduction in yield strength as cracks propagate</li>
+          <li>Decline in mobile dislocation density</li>
+          <li>Formation of barriers to dislocation movement</li>
+          <li>Progressive weakening of material toughness</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-star"></i> Key Advantages</h2>
+        
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-history"></i> Load History</div>
+            <p class="model-description">Explicitly accounts for the sequence and history of applied loads through the loading history exponent v<sub>i</sub>.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-sort"></i> Loading Sequence</div>
+            <p class="model-description">Accurately captures different behavior for low-to-high versus high-to-low loading transitions.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-link"></i> Load Interaction</div>
+            <p class="model-description">Load-interaction parameter L<sub>i</sub> directly models the coupling between successive load levels.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-bullseye"></i> Accuracy</div>
+            <p class="model-description">Achieves REP as low as 0.013% for low-to-high cases and 8.31% for high-to-low cases.</p>
+          </div>
+
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-box"></i> Physical Basis</div>
+            <p class="model-description">Grounded in crack growth mechanics, material degradation theory, and fatigue crack growth rate principles.</p>
+          </div>
+
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-tools"></i> Practical Implementation</div>
+            <p class="model-description">Implemented as LS-DYNA UMAT with computational efficiency through cyclic jumping technique.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-industry"></i> Industrial Applications</h2>
+        
+        <h3>Relevant Industries</h3>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-plane"></i> Aerospace</div>
+            <p class="model-description">Aircraft structures experience variable loading during takeoff, cruise, and landing. Adhesive joints in composite fuselages and wings must withstand complex load spectra.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-car"></i> Automotive</div>
+            <p class="model-description">Vehicle components undergo varying loads during acceleration, braking, and cornering. FRP composites with adhesive bonding are increasingly used for lightweighting.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-wind"></i> Wind Energy</div>
+            <p class="model-description">Wind turbine blades experience highly variable aerodynamic loads. Adhesive joints joining blade sections are critical for structural integrity.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title"><i class="fas fa-ship"></i> Marine</div>
+            <p class="model-description">Naval vessels and offshore structures face wave-induced cyclic loading with varying amplitudes. Composite materials with adhesive joints offer corrosion resistance.</p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Practical Benefits</h3>
+          <ul>
+            <li><strong>Design Optimization:</strong> Enables engineers to design adhesive joints with confidence under realistic service conditions</li>
+            <li><strong>Cost Reduction:</strong> Reduces overengineering by providing accurate fatigue life predictions</li>
+            <li><strong>Safety Enhancement:</strong> Prevents non-conservative predictions that could lead to premature failure</li>
+            <li><strong>Material Selection:</strong> Supports informed decisions about adhesive types and joint configurations</li>
+            <li><strong>Maintenance Planning:</strong> Improves prediction of inspection intervals and component replacement schedules</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-check-circle"></i> Conclusions</h2>
+        
+        <div class="highlight-box">
+          <h3>Major Findings</h3>
+          <ul>
+            <li>Novel bilinear traction-separation law successfully addresses three critical factors overlooked by conventional models: load history, loading sequence, and load interactions</li>
+            <li>Load-interaction parameter L<sub>i</sub> and loading history exponent v<sub>i</sub> provide physical basis for improved predictions</li>
+            <li>Model validated using double-lap joint configuration under four experimental step-loading cases</li>
+            <li>Achieved exceptional accuracy: REP reduced from 4.62% to 0.016% (Case 1), 34.88% to 0.013% (Case 2), 48.43% to 14.70% (Case 3), and 81.10% to 8.31% (Case 4)</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Model Behavior</h3>
+          <ul>
+            <li>Accelerated damage accumulation rate per cycle for low-to-high loading transitions, consistent with experimental observations</li>
+            <li>Decelerated damage accumulation rate per cycle for high-to-low loading transitions, aligning with physical mechanisms</li>
+            <li>Outperformed eight conventional fatigue damage-accumulation models across all test scenarios</li>
+            <li>Particularly effective for high-to-low loading where conventional models show 50-93% errors</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Computational Performance</h3>
+          <ul>
+            <li>Slight increase in simulation time for low-to-high cases due to additional computations</li>
+            <li>Significant time savings for high-to-low cases by avoiding premature failure predictions</li>
+            <li>Implicit time integration with cyclic jumping technique enables efficient high-cycle fatigue simulation</li>
+            <li>Successfully implemented in LS-DYNA as user material model (UMAT)</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Scientific Contribution</h3>
+          <p>This study represents a significant advancement in the fatigue analysis of FRP composite adhesive joints. The proposed model:</p>
+          <ul>
+            <li>Combines experimental validation, numerical simulation, and theoretical framework</li>
+            <li>Provides physically-based approach grounded in crack growth mechanics</li>
+            <li>Offers practical tool for engineers in aerospace, automotive, wind energy, and marine industries</li>
+            <li>Paves the way for more reliable engineering solutions under realistic service conditions</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-road"></i> Future Research Directions</h2>
+        
+        <h3>Model Extensions</h3>
+        <ul>
+          <li><strong>Multi-Block Loading:</strong> Extend model to handle more than two load levels in complex variable-amplitude spectra</li>
+          <li><strong>Random Loading:</strong> Adapt framework for random loading conditions encountered in service</li>
+          <li><strong>Environmental Effects:</strong> Incorporate temperature and humidity effects on adhesive properties</li>
+          <li><strong>Mixed-Mode Dominance:</strong> Further investigate load-interaction parameters under varying mode mixity</li>
+          <li><strong>Strain Rate Effects:</strong> Include strain rate sensitivity for impact and dynamic loading scenarios</li>
+        </ul>
+
+        <h3>Experimental Validation</h3>
+        <ul>
+          <li>Additional joint geometries: single-lap, scarf joints, step-lap configurations</li>
+          <li>Different adhesive systems with varying toughness and ductility characteristics</li>
+          <li>Multiple fiber-reinforced composites: carbon/epoxy, aramid/epoxy, hybrid systems</li>
+          <li>Three or more load levels to verify model performance in complex spectra</li>
+          <li>Frequency effects on fatigue behavior and damage accumulation</li>
+        </ul>
+
+        <h3>Advanced Computational Approaches</h3>
+        <ul>
+          <li><strong>Machine Learning:</strong> Use neural networks to optimize load-interaction parameters from experimental databases</li>
+          <li><strong>Multiscale Modeling:</strong> Link microscale damage mechanisms with macroscale structural response</li>
+          <li><strong>Uncertainty Quantification:</strong> Incorporate probabilistic approaches for material property variability</li>
+          <li><strong>Parallel Computing:</strong> Optimize UMAT implementation for large-scale structural simulations</li>
+          <li><strong>Adaptive Integration:</strong> Develop intelligent cycle-jumping strategies based on damage rate evolution</li>
+        </ul>
+
+        <h3>Industrial Implementation</h3>
+        <ul>
+          <li>Development of design guidelines and best practices for industry adoption</li>
+          <li>Integration with commercial FEA software packages beyond LS-DYNA</li>
+          <li>Creation of material databases with Paris Law parameters for common adhesives</li>
+          <li>Validation studies on full-scale structural components and assemblies</li>
+          <li>Correlation with in-service inspection data from aerospace and automotive sectors</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-lightbulb"></i> Theoretical Significance</h2>
+        
+        <h3>Addressing Fundamental Limitations</h3>
+        <p>This research fundamentally addresses the three critical factors that have limited fatigue damage-accumulation models since Miner's rule was introduced in 1945:</p>
+
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-number">1</div>
+            <div class="model-title">Load History</div>
+            <p class="model-description">The loading history exponent v<sub>i</sub> = (logN<sub>i</sub>/logN<sub>i-1</sub>) × (σ<sub>i-1</sub>/σ<sub>i</sub>) explicitly captures how previous loading affects current damage accumulation.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-number">2</div>
+            <div class="model-title">Loading Sequence</div>
+            <p class="model-description">The model naturally produces D > 1 for low-to-high sequences and D < 1 for high-to-low sequences, matching experimental observations.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-number">3</div>
+            <div class="model-title">Load Interactions</div>
+            <p class="model-description">The load-interaction parameter L<sub>i</sub> = T<sub>i</sub>/T<sub>i-1</sub> quantifies how successive load levels interact through crack tip mechanics.</p>
+          </div>
+        </div>
+
+        <h3>Bridge Between Disciplines</h3>
+        <p>The proposed model uniquely bridges multiple disciplines:</p>
+        <ul>
+          <li><strong>Fracture Mechanics:</strong> Paris Law and FCGR principles</li>
+          <li><strong>Continuum Damage Mechanics:</strong> Damage evolution and traction-separation frameworks</li>
+          <li><strong>Material Science:</strong> Degradation mechanisms and dislocation theory</li>
+          <li><strong>Computational Mechanics:</strong> Efficient numerical implementation and convergence strategies</li>
+          <li><strong>Experimental Mechanics:</strong> Validation against controlled laboratory tests</li>
+        </ul>
+
+        <div class="highlight-box">
+          <h3>Paradigm Shift</h3>
+          <p>Unlike previous models that attempt to correct Miner's rule through empirical adjustments, this approach fundamentally reformulates crack propagation rate to include physical mechanisms of load interaction and material memory. This represents a paradigm shift from curve-fitting exercises to mechanistically-based predictions.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-exclamation-circle"></i> Limitations & Considerations</h2>
+        
+        <h3>Current Model Limitations</h3>
+        <ul>
+          <li><strong>Two-Level Loading:</strong> Current validation limited to two-block loading; extension to multi-level spectra requires further verification</li>
+          <li><strong>Adhesive-Specific:</strong> Paris Law parameters (C, m) must be determined experimentally for each adhesive system</li>
+          <li><strong>Mode Interpolation:</strong> Linear interpolation for mixed-mode parameters may oversimplify complex mode interactions</li>
+          <li><strong>Temperature Effects:</strong> Current formulation does not explicitly account for temperature-dependent behavior</li>
+          <li><strong>Damage Threshold:</strong> Model assumes damage initiates immediately; does not include damage initiation threshold</li>
+        </ul>
+
+        <h3>Practical Implementation Considerations</h3>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title">Material Characterization</div>
+            <p class="model-description">Requires FCGR testing to determine Paris Law parameters for Mode I and Mode II. Testing can be time-consuming and requires specialized equipment.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Computational Resources</div>
+            <p class="model-description">High-cycle fatigue simulations (10⁶-10⁸ cycles) can require significant computation time even with cyclic jumping technique.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Convergence Sensitivity</div>
+            <p class="model-description">Implicit integration with cohesive elements can face convergence challenges; viscous regularization and arc-length methods are essential.</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Mesh Dependency</div>
+            <p class="model-description">Cohesive element formulation inherently mesh-dependent; element size affects energy dissipation and requires careful mesh design.</p>
+          </div>
+        </div>
+
+        <h3>Validation Scope</h3>
+        <div class="highlight-box">
+          <p>Current validation is based on:</p>
+          <ul>
+            <li>Single joint geometry (double-lap configuration)</li>
+            <li>One adhesive system (SikaDur 330)</li>
+            <li>One composite material (GFRP with E-glass/polyester)</li>
+            <li>Four specific loading cases (two low-to-high, two high-to-low)</li>
+            <li>Constant load ratio R = 0.1</li>
+            <li>Room temperature conditions (23°C)</li>
+          </ul>
+          <p style="margin-top: 1rem;">Extrapolation beyond these conditions should be performed cautiously until additional validation is conducted.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-book-open"></i> Key References</h2>
+        
+        <h3>Foundational Works</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Authors</th>
+              <th>Year</th>
+              <th>Contribution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Palmgren-Miner</td>
+              <td>1945</td>
+              <td>Linear damage accumulation rule - foundation of fatigue analysis</td>
+            </tr>
+            <tr>
+              <td>Dugdale & Barenblatt</td>
+              <td>1960-1962</td>
+              <td>Cohesive zone model for crack initiation and growth</td>
+            </tr>
+            <tr>
+              <td>Paris et al.</td>
+              <td>1961</td>
+              <td>Paris Law relating crack growth rate to stress intensity factor range</td>
+            </tr>
+            <tr>
+              <td>Wheeler</td>
+              <td>1972</td>
+              <td>Crack growth retardation model for variable amplitude loading</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Recent Advances</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Authors</th>
+              <th>Year</th>
+              <th>Contribution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Turon et al.</td>
+              <td>2006</td>
+              <td>Damage model for delamination under variable-mode loading</td>
+            </tr>
+            <tr>
+              <td>Khabbaz et al.</td>
+              <td>2012</td>
+              <td>Experimental data on adhesive joints under spectrum loading - validation basis</td>
+            </tr>
+            <tr>
+              <td>Vassilopoulos et al.</td>
+              <td>2015</td>
+              <td>Mode I fatigue and fracture behavior of adhesively-bonded GFRP composites</td>
+            </tr>
+            <tr>
+              <td>Tabiei & Zhang</td>
+              <td>2017-2018</td>
+              <td>Bilinear law correlating FCGR with damage parameter - foundation for current work</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Damage Accumulation Models</h3>
+        <ul>
+          <li><strong>Corten-Dolan (1956):</strong> Nonlinear damage curve approach considering stress level effects</li>
+          <li><strong>Kwofie (2012):</strong> Fatigue driving stress approach for variable amplitude loading</li>
+          <li><strong>Aeran et al. (2017):</strong> Nonlinear model based solely on S-N curve parameters</li>
+          <li><strong>Dattoma et al. (2006):</strong> Continuum damage mechanics model for variable loading</li>
+          <li><strong>Subramanyan (1976):</strong> Cumulative damage rule based on knee point of S-N curve</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-trophy"></i> Impact & Significance</h2>
+        
+        <div class="highlight-box">
+          <h3>Scientific Impact</h3>
+          <ul>
+            <li>First model to simultaneously address load history, sequence, and interaction effects in cohesive zone framework</li>
+            <li>Provides mechanistic foundation rather than empirical corrections to existing models</li>
+            <li>Bridges gap between fracture mechanics and fatigue damage accumulation theory</li>
+            <li>Validates effectiveness of crack tip plastic zone concepts for adhesive joint fatigue</li>
+            <li>Demonstrates importance of material memory effects in cumulative damage</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Engineering Impact</h3>
+          <ul>
+            <li><strong>Design Confidence:</strong> Engineers can design adhesive joints for realistic service conditions with quantified accuracy</li>
+            <li><strong>Weight Reduction:</strong> Eliminates excessive safety factors based on conservative linear models</li>
+            <li><strong>Life Extension:</strong> Accurate predictions enable extended service life for high-to-low loading scenarios</li>
+            <li><strong>Certification Support:</strong> Provides validated tool for regulatory certification of composite structures</li>
+            <li><strong>Maintenance Optimization:</strong> Improves inspection scheduling and replacement planning</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Economic Impact</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Design Optimization</div>
+              <div class="info-value">Reduced Material Costs</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Testing Reduction</div>
+              <div class="info-value">Lower Development Time</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Service Life</div>
+              <div class="info-value">Extended Operational Use</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Safety</div>
+              <div class="info-value">Prevented Failures</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Industry Adoption Potential</h3>
+        <p>The model's implementation in LS-DYNA, a widely-used commercial FEA software, facilitates rapid adoption across industries. Key sectors positioned to benefit:</p>
+
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title">Commercial Aviation</div>
+            <p class="model-description">Aircraft structures with bonded composite components experiencing flight load spectra</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Automotive Manufacturing</div>
+            <p class="model-description">Lightweight vehicles with adhesively bonded FRP components under variable road loads</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Renewable Energy</div>
+            <p class="model-description">Wind turbine blade manufacturing and maintenance planning under stochastic wind loading</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Marine Engineering</div>
+            <p class="model-description">Naval vessels and offshore platforms with composite structures under wave loading</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-graduation-cap"></i> Educational Value</h2>
+        
+        <h3>For Students & Researchers</h3>
+        <p>This research provides an excellent case study demonstrating:</p>
+
+        <ul>
+          <li><strong>Problem Identification:</strong> How to identify fundamental gaps in existing theoretical frameworks</li>
+          <li><strong>Model Development:</strong> Process of building physically-based models from first principles</li>
+          <li><strong>Experimental Validation:</strong> Importance of rigorous validation against experimental data</li>
+          <li><strong>Comparative Analysis:</strong> Methodology for comparing new approaches against established methods</li>
+          <li><strong>Implementation:</strong> Practical considerations for numerical implementation in commercial software</li>
+        </ul>
+
+        <h3>Learning Outcomes</h3>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title">Fatigue Mechanics</div>
+            <p class="model-description">Understanding cumulative damage, load sequence effects, and crack propagation mechanisms</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Cohesive Zone Modeling</div>
+            <p class="model-description">Application of traction-separation laws to adhesive joint failure prediction</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">FEA Implementation</div>
+            <p class="model-description">User material model development, implicit integration, and convergence strategies</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Validation Methods</div>
+            <p class="model-description">Statistical comparison, error metrics, and model performance assessment</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-check-double"></i> Summary of Achievements</h2>
+        
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Accuracy Improvement</div>
+            <div class="info-value">Up to 99.98%</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Models Outperformed</div>
+            <div class="info-value">8 Conventional Methods</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Test Cases Validated</div>
+            <div class="info-value">4 Load Scenarios</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Software Integration</div>
+            <div class="info-value">LS-DYNA UMAT</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h3>Core Innovation</h3>
+          <p style="font-size: 1.1rem; font-weight: 500;">Introduction of load-interaction parameter (L<sub>i</sub>) and loading history exponent (v<sub>i</sub>) into Paris Law framework, enabling the first cohesive zone model to simultaneously account for load history, sequence, and interaction effects in adhesive joint fatigue under variable amplitude loading.</p>
+        </div>
+
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-title">Theoretical Contribution</div>
+            <p class="model-description">Mechanistic model bridging fracture mechanics, damage mechanics, and material science</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Experimental Validation</div>
+            <p class="model-description">Rigorous comparison against laboratory tests with exceptional agreement</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Computational Implementation</div>
+            <p class="model-description">Practical UMAT in commercial FEA software with efficient algorithms</p>
+          </div>
+          
+          <div class="model-card">
+            <div class="model-title">Industrial Relevance</div>
+            <p class="model-description">Applicable to aerospace, automotive, wind energy, and marine sectors</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p><strong>University of Cincinnati</strong></p>
+        <p>Department of Mechanical and Materials Engineering</p>
+        <p>College of Engineering and Applied Science</p>
+        <p>2901 Woodside Drive, Cincinnati, OH 45221, USA</p>
+        <p style="margin-top: 1rem;">Published in <em>Journal of Composites Science</em>, 2025</p>
+        <p style="margin-top: 0.5rem;">DOI: 10.3390/jcs9030112</p>
+        <p class="copyright">© 2025 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
