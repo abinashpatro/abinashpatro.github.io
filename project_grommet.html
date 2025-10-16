@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Showcase | Progressive Damage Simulation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #001f3f;
+      --primary-dark: #001529;
+      --navy-medium: #003d5c;
+      --navy-light: #004d73;
+      --accent: #0077be;
+      --accent-light: #3399cc;
+      --success: #10b981;
+      --dark: #0a1929;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --border: #e2e8f0;
+      --sky-blue: #e6f2ff;
+      --pale-blue: #f0f8ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: linear-gradient(to bottom, #f8fafc 0%, #e6f2ff 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--navy-medium) 50%, var(--navy-light) 100%);
+      color: white;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 119, 190, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(51, 153, 204, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 15s infinite ease-in-out reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo {
+      height: 120px;
+      background: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.85;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .client-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .client-badge:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    main {
+      padding: 4rem 0;
+    }
+
+    .hero-image-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .project-hero-image {
+      width: 100%;
+      height: 500px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #cce5ff 0%, #99ccff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .project-hero-image:hover img {
+      transform: scale(1.05);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0, 119, 190, 0.1) 0%, rgba(0, 61, 92, 0.05) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .hero-overlay i {
+      font-size: 6rem;
+      color: rgba(0, 31, 63, 0.15);
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 31, 63, 0.15);
+      border-color: var(--accent);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--accent);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      font-size: 1.75rem;
+    }
+
+    h2 i {
+      margin-right: 12px;
+      color: var(--accent);
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      padding: 1.75rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #f0f8ff 100%);
+      border-radius: 16px;
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      transform: translateX(5px);
+      border-left-width: 6px;
+      background: linear-gradient(135deg, #e6f2ff 0%, #cce5ff 100%);
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .software-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 0.75rem;
+    }
+
+    .software-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--navy-medium) 100%);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 31, 63, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .software-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 31, 63, 0.4);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin-bottom: 1.25rem;
+      padding-left: 2.5rem;
+      position: relative;
+      font-size: 1.05rem;
+    }
+
+    li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.875rem;
+    }
+
+    .results-highlight {
+      background: linear-gradient(135deg, #e6f2ff 0%, #cce5ff 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+      margin-top: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 119, 190, 0.1);
+    }
+
+    .results-highlight p {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.15rem;
+    }
+
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    figure {
+      margin: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    figure:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 119, 190, 0.2);
+    }
+
+    .figure-img {
+      width: 100%;
+      height: 240px;
+      background: linear-gradient(135deg, #cce5ff 0%, #99ccff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      font-style: italic;
+      position: relative;
+      overflow: hidden;
+      font-weight: 500;
+    }
+
+    .figure-img::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    figcaption {
+      padding: 1.5rem;
+      background: white;
+      font-size: 0.95rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .figure-number {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--navy-medium) 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      height: 45px;
+      margin-bottom: 0.5rem;
+      opacity: 0.9;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.25rem;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .figure-grid {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 3rem 0 2.5rem;
+      }
+
+      .card {
+        padding: 2rem;
+      }
+
+      .project-hero-image {
+        height: 350px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .project-hero-image {
+        height: 250px;
+      }
+
+      .hero-overlay i {
+        font-size: 4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        
+        <h1>Reducing Grommet Formation in Non-Adhesive Bonding of Non-Woven Fabric</h1>
+        <div class="client-badge">
+          <i class="fas fa-building"></i> Project for:</strong>
+        </div>
+        <div class="logo-container">
+          <img src="assets/PGlogo.png" alt="Company Logo" class="logo" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card hero-image-card">
+        <div class="project-hero-image">
+          <img src="Image/grommet.png" alt="Progressive Damage Simulation Visualization" />
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Role</span>
+            <span class="info-value">FEA Analyst</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Simulation Type</span>
+            <span class="info-value">Structural Simulation, </p> Arbitrary Lagrangian-Eulerian (ALE) Simulation, </p> and Multiphysics Simulation</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Software Used</span>
+            <div>
+              <div class="software-list">
+                <span class="software-badge">LS-DYNA</span>
+                <span class="software-badge">Abaqus</span>
+                <span class="software-badge">Fortran</span>
+                <span class="software-badge">Python</span>
+              </div>
+            </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-bullseye"></i> Objective</h2>
+        <p>
+          To predict and reduce grommet formation during high-speed, non-adhesive bonding of non-woven fabric by optimizing the nub-anvil interaction, utilizing advanced simulation techniques and material modeling. The project included the development of a novel polymer material model to accurately simulate phase transitions under rapid compression.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-tasks"></i> Contribution</h2>
+            <ul>
+              <li>Developed FEA models in LS-DYNA and Abaqus to simulate grommet formation in high-speed polymer bonding.</li>
+              <li>Created a custom material model capturing polymer phase transitions and deformation under ultra-fast processes.</li>
+              <li>Applied ALE methods to model interactions between the anvil, polymer nubs, and fabric, minimizing numerical instabilities.</li>
+              <li>Identified causes of excessive grommet formation and proposed nub and anvil design improvements, validated in pilot trials.</li>
+              <li>Collaborated with engineering teams to integrate simulation insights, accelerating design iterations and improving quality.</li>
+            </ul>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-chart-line"></i> Results</h2>
+        <p>
+          Reduced grommet formation by over 60% in high-speed non-adhesive bonding of non-woven fabrics by leveraging ALE-based FEA and custom polymer modeling, improving product quality and enabling repeatable, simulation-driven process optimization at P&G.
+        </p>
+        <div class="results-highlight">
+          <p><strong>Key Achievements:</strong></p>
+              <ul>
+                <li>Reduced grommet formation over 60% in pilot production through simulation-guided design optimization.</li>
+                <li>Created a state-of-the-art, user-defined material model for polymers.</li>
+                <li>Enhanced product quality and consistency, resulting in fewer bonding defects and stronger fabric integrity.</li>
+                <li>Developed a repeatable simulation and testing protocol for efficient troubleshooting and process improvements across P&amp;G sites.</li>
+              </ul>
+
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-images"></i> Figures</h2>
+        <div class="figure-grid">
+          <span class="figure-number">**Additional details are not disclosed due to my current NDA with P&G.**
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <img src="company_logo.png" alt="Company Logo" class="footer-logo" />
+        <p>Progressive Damage Simulation Project</p>
+        <p class="copyright">© 2023 Simulation Engineering Portfolio. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

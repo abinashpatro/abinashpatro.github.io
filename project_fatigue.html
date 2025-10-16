@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Showcase | Progressive Damage Simulation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #B22222;
+      --primary-dark: #8B1A1A;
+      --crimson-medium: #DC143C;
+      --crimson-light: #E74C3C;
+      --accent: #E63946;
+      --accent-light: #FF6B6B;
+      --success: #10b981;
+      --dark: #2D0A0A;
+      --light: #FFF5F5;
+      --gray: #8B6B6B;
+      --border: #FFE4E1;
+      --crimson-pale: #FFF0F0;
+      --pale-crimson: #FFF5F5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: linear-gradient(to bottom, #FFF5F5 0%, #FFE4E1 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--crimson-medium) 50%, var(--crimson-light) 100%);
+      color: white;
+      padding: 5rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(230, 57, 70, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 107, 107, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 15s infinite ease-in-out reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo {
+      height: 96px;
+      background: white;
+      padding: 8px 16px;
+      border-radius: 9.6px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff 0%, #FFE4E1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      opacity: 0.85;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .client-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .client-badge:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    main {
+      padding: 4rem 0;
+    }
+
+    .hero-image-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .project-hero-image {
+      width: 100%;
+      height: 500px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #FFCCCB 0%, #FF9999 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .project-hero-image:hover img {
+      transform: scale(1.05);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(230, 57, 70, 0.1) 0%, rgba(178, 34, 34, 0.05) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .hero-overlay i {
+      font-size: 6rem;
+      color: rgba(178, 34, 34, 0.15);
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(178, 34, 34, 0.15);
+      border-color: var(--accent);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid var(--accent);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      font-size: 1.75rem;
+    }
+
+    h2 i {
+      margin-right: 12px;
+      color: var(--accent);
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      padding: 1.75rem;
+      background: linear-gradient(135deg, #FFF5F5 0%, #FFF0F0 100%);
+      border-radius: 16px;
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      transform: translateX(5px);
+      border-left-width: 6px;
+      background: linear-gradient(135deg, #FFE4E1 0%, #FFCCCB 100%);
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .software-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 0.75rem;
+    }
+
+    .software-badge {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--crimson-medium) 100%);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(178, 34, 34, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .software-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(178, 34, 34, 0.4);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin-bottom: 1.25rem;
+      padding-left: 2.5rem;
+      position: relative;
+      font-size: 1.05rem;
+    }
+
+    li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.875rem;
+    }
+
+    .results-highlight {
+      background: linear-gradient(135deg, #FFE4E1 0%, #FFCCCB 100%);
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+      margin-top: 2rem;
+      box-shadow: 0 4px 12px rgba(230, 57, 70, 0.1);
+    }
+
+    .results-highlight p {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.15rem;
+    }
+
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    figure {
+      margin: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    figure:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(230, 57, 70, 0.2);
+    }
+
+.figure-img {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  background: #f8fdf9;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.figure-img img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* keeps full image visible */
+  object-position: center;
+}
+
+
+    .figure-img::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    figcaption {
+      padding: 1.5rem;
+      background: white;
+      font-size: 0.95rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .figure-number {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--crimson-medium) 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      height: 90px;
+      margin-bottom: 0.5rem;
+      opacity: 0.9;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.25rem;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .figure-grid {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 3rem 0 2.5rem;
+      }
+
+      .card {
+        padding: 2rem;
+      }
+
+      .project-hero-image {
+        height: 350px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .project-hero-image {
+        height: 250px;
+      }
+
+      .hero-overlay i {
+        font-size: 4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        
+        <h1>Modeling Different Modes of Fatigue Failure in Adhesive Joints of Composite Materials</h1>
+        
+        <div class="client-badge">
+          <i class="fas fa-building"></i> Project for:</strong>
+        </div>
+        <div class="logo-container">
+          <img src="assets/UC_logo.png" alt="Company Logo" class="logo" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card hero-image-card">
+        <div class="project-hero-image">
+          <img src="fatigue/dlj_sim_01.gif" alt="Progressive Damage Simulation Visualization" />
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Role</span>
+            <span class="info-value">Doctoral Researcher</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Simulation Type</span>
+            <span class="info-value">Mechanical/Structural Simulation</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Software Used</span>
+            <div>
+              <div class="software-list">
+                <span class="software-badge">LS-DYNA</span>
+                <span class="software-badge">ANSYS</span>
+                <span class="software-badge">FORTRAN</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-bullseye"></i> Objective</h2>
+        <p>
+          To develop a novel bilinear traction-separation cohesive material model capable of simulating fatigue failure under variable loading and low cycle fatigue conditions in adhesive joints of composite materials. The study encompassed three distinct joint configurations—Stepped Joint, Double Lap Joint, and Double Cantilever Joint—as case studies for doctoral research.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-tasks"></i> Contribution</h2>
+            <ul>
+                <li>Developed and implemented a bilinear traction-separation cohesive material model in LS-DYNA to accurately simulate fatigue failure under variable cyclic loading and low cycle fatigue in adhesive joints.</li>
+                <li>Modeled three different adhesive joint configurations—Stepped Joint, Double Lap Joint, and Double Cantilever Joint—to evaluate the model’s robustness across multiple geometries and loading conditions.</li>
+                <li>Integrated fatigue damage accumulation mechanisms into the cohesive law, allowing prediction of progressive stiffness degradation and crack growth under complex loading cycles.</li>
+                <li>Validated the model against experimental data and reduced prediction errors significantly by accounting for mixed-mode fatigue behavior and material-specific parameters.</li>
+            </ul>
+
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-chart-line"></i> Results</h2>
+        <p>
+          Developed a bilinear traction-separation cohesive model in LS-DYNA that accurately predicts variable and low-cycle fatigue failure in composite adhesive joints, reducing prediction errors from ~80% to under 1% across multiple joint configurations.
+
+        </p>
+        <div class="results-highlight">
+          <p><strong>Key Achievements:</strong></p>
+            <ul>
+                <li>Reduced fatigue prediction errors from approximately 80% to &lt;1% across variable loading cases, demonstrating high model accuracy.</li>
+                <li>Achieved similar accuracy improvements for low-cycle fatigue simulations.</li>
+                <li>Enabled reliable fatigue life predictions of composite adhesive joints, supporting safer automotive and aerospace designs.</li>
+            </ul>
+
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><i class="fas fa-images"></i> Figures</h2>
+        <div class="figure-grid">
+          <figure>
+            <div class="figure-img"><img src="fatigue/dlj_sim_01.gif"></div>
+            <figcaption>
+              <span class="figure-number">Figure 1.</span> Fatigue simulation of double lap joint.
+            </figcaption>
+          </figure>
+
+          <figure>
+            <div class="figure-img"><img src="fatigue/dcb_sim.gif"></div>
+            <figcaption>
+              <span class="figure-number">Figure 2.</span> Fatigue simulation of double cantilever joint.
+            </figcaption>
+          </figure>
+
+          <figure>
+            <div class="figure-img"><img src="fatigue/stepped_joint_sim.gif"></div>
+            <figcaption>
+              <span class="figure-number">Figure 3.</span> fatigue simulation of stepped lap joint.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <img src="company_logo.png" alt="Company Logo" class="footer-logo" />
+        <p>Progressive Damage Simulation Project</p>
+        <p class="copyright">© 2023 Simulation Engineering Portfolio. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
