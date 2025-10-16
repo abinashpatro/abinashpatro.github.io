@@ -476,10 +476,80 @@
         font-size: 4rem;
       }
     }
+
+    /* Navigation Bar Styling */
+#desktop-nav {
+  background: white;
+  color: var(--primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 4rem;
+  box-shadow: 0 4px 12px rgba(5, 71, 42, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+#desktop-nav .logo {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--primary-dark);
+}
+
+#desktop-nav .nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+#desktop-nav .nav-links a {
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+#desktop-nav .nav-links a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  #desktop-nav {
+    flex-direction: column;
+    padding: 1rem 2rem;
+  }
+
+  #desktop-nav .nav-links {
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}
+    
   </style>
 </head>
 
 <body>
+
+    <nav id="desktop-nav">
+    <div class="logo">Abinash Patro</div>
+    <div>
+      <ul class="nav-links">
+        <li><a href="https://abinashpatro.github.io/#profile">Home</a></li>
+        <li><a href="https://abinashpatro.github.io/#ee">Experience & Education</a></li>
+        <li><a href="https://abinashpatro.github.io/#skills">Skills</a></li>
+        <li><a href="https://abinashpatro.github.io/#research">Research</a></li>
+        <li><a href="https://abinashpatro.github.io/#projects">Projects</a></li>
+        <li><a href="https://abinashpatro.github.io/#teaching">Teaching</a></li>
+        <li><a href="https://abinashpatro.github.io/#publications">Publications</a></li>
+        <li><a href="https://abinashpatro.github.io/#about">About</a></li>
+        <li><a href="https://abinashpatro.github.io/#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  
   <header>
     <div class="container">
       <div class="header-content">
@@ -601,4 +671,5 @@
     </div>
   </footer>
 </body>
+
 </html>
