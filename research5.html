@@ -463,10 +463,102 @@
   object-fit: contain;
 }
 
+/* Navigation Styles */
+    #desktop-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-medium) 50%, var(--primary-light) 100%);
+      box-shadow: 0 4px 20px rgba(138, 0, 196, 0.3);
+      padding: 1rem 0;
+    }
+
+    #desktop-nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav-links li:before {
+      content: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+      opacity: 0.9;
+    }
+
+    .nav-links a:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-links a:hover:after {
+      width: 100%;
+    }
+
   </style>
 </head>
 
 <body>
+  <nav id="desktop-nav">
+    <div class="container">
+      <div class="nav-logo">Abinash Patro</div>
+      <div>
+        <ul class="nav-links">
+          <li><a href="https://abinashpatro.github.io/#profile">Home</a></li>
+          <li><a href="https://abinashpatro.github.io/#ee">Experience & Education</a></li>
+          <li><a href="https://abinashpatro.github.io/#skills">Skills</a></li>
+          <li><a href="https://abinashpatro.github.io/#research">Research</a></li>
+          <li><a href="https://abinashpatro.github.io/#projects">Projects</a></li>
+          <li><a href="https://abinashpatro.github.io/#teaching">Teaching</a></li>
+          <li><a href="https://abinashpatro.github.io/#publications">Publications</a></li>
+          <li><a href="https://abinashpatro.github.io/#about">About</a></li>
+          <li><a href="https://abinashpatro.github.io/#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  
   <header>
     <div class="container">
       <div class="header-content">
@@ -979,10 +1071,8 @@
   <footer>
     <div class="container">
       <div class="footer-content">
-        <p><strong>Elastic-Plastic Bilinear Traction Separation Law Research</strong></p>
-        <p>Advanced Materials and Fatigue Modeling</p>
-        <p style="margin-top: 1rem;">Based on presentation: "Elastic-Plastic Bilinear Traction Separation Law Through Fatigue Crack Growth Rate (FCGR) for Adhesive Joint in Low Cycle Fatigue"</p>
-        <p class="copyright">© 2024 Research Presentation. All rights reserved.</p>
+        <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">Elastic-Plastic Bilinear Traction Separation Law Through Fatigue Crack Growth Rate for Adhesive Joints</p>
+        <p class="copyright">© 2025 Abinash Patro. All rights reserved.</p>
       </div>
     </div>
   </footer>

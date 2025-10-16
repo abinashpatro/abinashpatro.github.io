@@ -407,11 +407,119 @@
   object-fit: contain;
 }
 
+/* Navigation Styles */
+#desktop-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--orange-medium) 50%, var(--orange-light) 100%);
+  box-shadow: 0 4px 20px rgba(184, 78, 0, 0.3);
+  padding: 1rem 0;
+}
+
+#desktop-nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-links li:before {
+  content: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0.5rem 0;
+  opacity: 0.9;
+}
+
+.nav-links a:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.nav-links a:hover:after {
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #desktop-nav {
+    display: none;
+  }
+}
+
 
   </style>
 </head>
 
 <body>
+  <!-- Navigation bar to add after <body> tag -->
+<nav id="desktop-nav">
+  <div class="container">
+    <div class="nav-logo">Abinash Patro</div>
+    <div>
+      <ul class="nav-links">
+        <li><a href="https://abinashpatro.github.io/#profile">Home</a></li>
+        <li><a href="https://abinashpatro.github.io/#ee">Experience & Education</a></li>
+        <li><a href="https://abinashpatro.github.io/#skills">Skills</a></li>
+        <li><a href="https://abinashpatro.github.io/#research">Research</a></li>
+        <li><a href="https://abinashpatro.github.io/#projects">Projects</a></li>
+        <li><a href="https://abinashpatro.github.io/#teaching">Teaching</a></li>
+        <li><a href="https://abinashpatro.github.io/#publications">Publications</a></li>
+        <li><a href="https://abinashpatro.github.io/#about">About</a></li>
+        <li><a href="https://abinashpatro.github.io/#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
   <header>
     <div class="container">
       <div class="header-content">
@@ -1892,13 +2000,8 @@ between original bilinear traction separation law and proposed traction separati
   <footer>
     <div class="container">
       <div class="footer-content">
-        <p><strong>University of Cincinnati</strong></p>
-        <p>Department of Mechanical and Materials Engineering</p>
-        <p>College of Engineering and Applied Science</p>
-        <p>2901 Woodside Drive, Cincinnati, OH 45221, USA</p>
-        <p style="margin-top: 1rem;">Published in <em>Journal of Composites Science</em>, 2025</p>
-        <p style="margin-top: 0.5rem;">DOI: 10.3390/jcs9030112</p>
-        <p class="copyright">© 2025 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license.</p>
+        <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">Adhesive Joints in Fiber-Reinforced Composite Materials Under Step/Variable-Amplitude Loading</p>
+        <p class="copyright">© 2025 Abinash Patro. All rights reserved.</p>
       </div>
     </div>
   </footer>
